@@ -44,8 +44,9 @@ export const PRODUCTS: Product[] = [
     name: "Xstatic Weighted Jump Ropes",
     price: 25,
     compareAtPrice: 35,
-    image: "/images/ropes/4.jpg",
+    image: "/images/ropes/5.jpg",
     images: [
+      "/images/ropes/5.jpg",
       "/images/ropes/4.jpg",
       "/images/ropes/1.jpg",
       "/images/ropes/2.jpg",
@@ -63,8 +64,8 @@ export const PRODUCTS: Product[] = [
     name: "Xstatic Door Pull Up Bar",
     price: 60,
     compareAtPrice: 69.99,
-    image: "/images/pullupbar/1.jpg",
-    images: ["/images/pullupbar/1.jpg", "/images/pullupbar/2.jpg"],
+    image: "/images/pullupbar/3.jpg",
+    images: ["/images/pullupbar/3.jpg", "/images/pullupbar/1.jpg", "/images/pullupbar/2.jpg"],
     category: "training",
     description:
       "Turn any room into a gym. Our adjustable pull-up bar extends to fit most door frames or wall spaces. This means no screws, no damage. Built with heavy-duty materials and tested to hold up to 330 lbs, it's the ultimate tool for full upper-body training at home, anytime. Measurements: 72-110cm",
