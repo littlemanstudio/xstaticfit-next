@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
-const TITLE = "Terms & Conditions";
+const TITLE = "Terms & Conditions of Sale, Use, and Returns";
 const DESCRIPTION =
-  "The terms that govern orders, shipping, returns, and use of xstaticfit.com. Read our full terms and conditions before you shop.";
+  "The terms that govern orders, shipping, returns, and use of xstaticfit.com. Read our full terms and conditions carefully before you shop with us today.";
 
 export const metadata: Metadata = {
   title: TITLE,

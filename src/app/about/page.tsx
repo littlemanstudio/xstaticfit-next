@@ -4,9 +4,9 @@ import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
-const TITLE = "Our Story";
+const TITLE = "Our Story: Founded by a 14-Year-Old Founder";
 const DESCRIPTION =
-  "Founded by 14-year-old Puerto Rico entrepreneur Allan Rosario, Xstatic Fit builds home training gear to help you break barriers and become your best self.";
+  "Founded by 14-year-old Puerto Rico entrepreneur Allan Rosario, Xstatic Fit builds home training gear to help you break barriers and become your best self today.";
 
 export const metadata: Metadata = {
   title: TITLE,

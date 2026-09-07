@@ -80,7 +80,7 @@ export default function ProductCoverflow({
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <Image
           src={products[currentIndex].image}
-          alt=""
+          alt={`Blurred ambient backdrop of ${products[currentIndex].name}`}
           aria-hidden="true"
           fill
           className="scale-110 object-cover opacity-20 blur-3xl transition-opacity duration-1000"

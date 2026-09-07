@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-const TITLE = "Shop All Products";
+const TITLE = "Shop All Home Training Gear & Equipment";
 const DESCRIPTION =
-  "Browse Xstatic Fit's full catalog: carbon fiber hand grips, weighted jump ropes, and adjustable door pull-up bars built for real home training.";
+  "Browse Xstatic Fit's full training catalog: carbon fiber hand grips, weighted jump ropes, and adjustable door pull-up bars built for real home training.";
 
 export const metadata: Metadata = {
   title: TITLE,

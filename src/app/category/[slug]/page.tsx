@@ -15,12 +15,13 @@ const CATEGORY_LABELS: Record<string, string> = {
 const CATEGORY_COPY: Record<string, { intro: string; body: string }> = {
   training: {
     intro:
-      "Every piece of Xstatic Fit training gear is built to hold up to real, repeated work, not just look good in a photo.",
-    body: "Our training category covers the equipment you actually reach for: carbon fiber hand grips for pull-ups and bar work, a weighted jump rope for cardio that scales with you, and an adjustable door pull-up bar that turns any room into a gym. Each product ships with a \"how to use\" video, so you're never guessing how to get started. Buy all three together and save 10% on your order.",
+      "Every piece of Xstatic Fit training gear, from carbon grips to weighted jump ropes, is built to hold up to real, repeated work, not just look good in a photo.",
+    body: "Our training category covers the equipment you actually reach for: carbon fiber hand grips for pull-ups and bar work, a weighted jump rope for cardio that scales with you, and an adjustable door pull-up bar that turns any room into a gym. Each product ships with a \"how to use\" video, so you're never guessing how to get started. Buy all three together and save 10% on your order, and every purchase is backed by our 14-day return policy if it's not the right fit for your setup.",
   },
   apparel: {
-    intro: "Xstatic Fit apparel is in the works.",
-    body: "We're building out a training apparel line to match the same standard as our gear: built for real workouts, not just the gym selfie. In the meantime, check out our training equipment, carbon grips, weighted jump ropes, and door pull-up bars, all built to help you become the best version of yourself.",
+    intro:
+      "Xstatic Fit apparel is in the works. In the meantime, shop our training gear, built for real home workouts, not just the gym selfie you post afterward.",
+    body: "We're building out a training apparel line to match the same standard as our gear: built for real workouts, not just the gym selfie. Every design will go through the same real-training testing our equipment does before it ships, so when the line launches, you can trust it holds up to actual reps, not just a lookbook. In the meantime, check out our training equipment, carbon grips, weighted jump ropes, and door pull-up bars, all built to help you become the best version of yourself. Want to be the first to know when apparel drops? Sign up for our newsletter on the homepage, or follow along on Instagram for updates as we slowly get closer to an actual launch date.",
   },
 };
 
@@ -33,7 +34,7 @@ export async function generateMetadata(props: PageProps<"/category/[slug]">): Pr
   const label = CATEGORY_LABELS[slug];
   if (!label) return {};
 
-  const title = `Shop ${label}`;
+  const title = `Shop ${label} Gear & Equipment Online`;
   const description = CATEGORY_COPY[slug]?.intro ?? `Shop ${label} at Xstatic Fit.`;
 
   return {

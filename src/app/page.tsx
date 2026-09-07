@@ -24,7 +24,8 @@ export default function Home() {
           <h2 className="font-stencil text-3xl uppercase md:text-4xl">Join the Xstatic Fit Club</h2>
           <p className="text-sm text-white/60">
             Be the best version of yourself. We are all able to achieve greatness if we put in
-            the work.
+            the work. Shop training gear built for the reps, and browse the apparel line we&rsquo;re
+            building out next.
           </p>
         </Reveal>
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-6 md:grid-cols-2">

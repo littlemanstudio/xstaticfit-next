@@ -18,16 +18,16 @@ export async function generateMetadata(props: PageProps<"/product/[slug]">): Pro
   if (!product) return {};
 
   return {
-    title: product.name,
+    title: product.metaTitle,
     description: product.metaDescription,
     openGraph: {
-      title: product.name,
+      title: product.metaTitle,
       description: product.metaDescription,
       type: "website",
       images: [{ url: product.image }],
     },
     twitter: {
-      title: product.name,
+      title: product.metaTitle,
       description: product.metaDescription,
       images: [product.image],
     },

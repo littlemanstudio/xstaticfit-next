@@ -3,9 +3,9 @@ import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
-const TITLE = "Shipping & Returns";
+const TITLE = "Shipping Times, Rates & Our Return Policy";
 const DESCRIPTION =
-  "Xstatic Fit ships within 24-48 hours with 3-5 day delivery, plus a 14-day return policy. See our full shipping and returns policy here.";
+  "Xstatic Fit ships within 24 to 48 hours with 3 to 5 day delivery, plus a 14-day return policy. See our full shipping and returns policy before you order.";
 
 export const metadata: Metadata = {
   title: TITLE,

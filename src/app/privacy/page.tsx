@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
-const TITLE = "Privacy Policy";
+const TITLE = "Privacy Policy & Your Data Protection";
 const DESCRIPTION =
-  "How Xstatic Fit collects, uses, and protects your personal information when you shop with us. Read our full privacy policy.";
+  "How Xstatic Fit collects, uses, and protects your personal information when you shop with us. Read our full privacy policy before you place your order.";
 
 export const metadata: Metadata = {
   title: TITLE,

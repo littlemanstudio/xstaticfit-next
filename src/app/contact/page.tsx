@@ -4,9 +4,9 @@ import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 import ContactForm from "./ContactForm";
 
-const TITLE = "Contact Us";
+const TITLE = "Contact Our Customer Support Team Today";
 const DESCRIPTION =
-  "Get in touch with the Xstatic Fit team for order questions, product support, or general inquiries. We typically respond within 24-48 hours.";
+  "Get in touch with the Xstatic Fit team for order questions, product support, or general inquiries. Our support team typically responds within 24 to 48 hours.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -74,7 +74,23 @@ export default function ContactPage() {
                 </Link>
                 .
               </li>
+              <li>
+                Want the founder&rsquo;s story?{" "}
+                <Link href="/about" className="underline">
+                  Read about Xstatic Fit
+                </Link>
+                .
+              </li>
             </ul>
+          </div>
+
+          <div className="mt-10 border-t border-white/10 pt-6">
+            <p className="text-xs uppercase tracking-[0.2em] text-white/50">Order support</p>
+            <p className="mt-3 text-sm leading-relaxed text-white/70">
+              Include your order number if you&rsquo;re writing about an existing purchase, and
+              we&rsquo;ll pull it up right away. It speeds things up, especially for shipping and
+              return questions where we need to look at the specific carrier details on your box.
+            </p>
           </div>
         </Reveal>
 
