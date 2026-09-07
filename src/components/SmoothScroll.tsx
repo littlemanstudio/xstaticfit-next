@@ -17,7 +17,22 @@ export default function SmoothScroll() {
     }
     const frame = requestAnimationFrame(raf);
 
+    // Lenis owns scroll, so native "#hash" anchor jumps get fought/undone by
+    // its RAF loop. Route in-page hash links through lenis.scrollTo instead.
+    function handleClick(e: MouseEvent) {
+      const anchor = (e.target as HTMLElement).closest("a[href^='#']");
+      if (!anchor) return;
+      const hash = anchor.getAttribute("href");
+      if (!hash || hash === "#") return;
+      const target = document.querySelector(hash);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target as HTMLElement, { offset: -96, duration: 1.4 });
+    }
+    document.addEventListener("click", handleClick);
+
     return () => {
+      document.removeEventListener("click", handleClick);
       cancelAnimationFrame(frame);
       lenis.destroy();
     };
