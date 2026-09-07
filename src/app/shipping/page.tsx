@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
+
+const TITLE = "Shipping & Returns";
+const DESCRIPTION =
+  "Xstatic Fit ships within 24-48 hours with 3-5 day delivery, plus a 14-day return policy. See our full shipping and returns policy here.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: { title: TITLE, description: DESCRIPTION },
+  twitter: { title: TITLE, description: DESCRIPTION },
+  alternates: { canonical: "/shipping" },
+};
 
 export default function ShippingPage() {
   return (

@@ -16,7 +16,7 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative flex h-[100vh] min-h-[640px] flex-col justify-end overflow-hidden bg-ink pb-24 pt-32 text-white"
+      className="relative -mt-20 flex h-[calc(100vh+5rem)] min-h-[720px] flex-col justify-end overflow-hidden bg-ink pb-24 pt-32 text-white"
     >
       <motion.div style={{ y: imageY }} className="absolute inset-0">
         <motion.div

@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
-export const metadata = { title: "Privacy Policy — Xstatic Fit" };
+const TITLE = "Privacy Policy";
+const DESCRIPTION =
+  "How Xstatic Fit collects, uses, and protects your personal information when you shop with us. Read our full privacy policy.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  robots: { index: true, follow: true },
+  alternates: { canonical: "/privacy" },
+};
 
 export default function PrivacyPage() {
   return (
@@ -49,10 +59,10 @@ export default function PrivacyPage() {
           <section>
             <h2 className="mb-3 font-stencil text-xl uppercase text-white">Sharing Your Information</h2>
             <p>
-              We share information only with service providers who help us run our business —
-              payment processing (Stripe), shipping carriers, and email delivery — and only to the
-              extent needed to provide those services. We do not sell your personal information to
-              third parties.
+              We share information only with service providers who help us run our business,
+              like payment processing (Stripe), shipping carriers, and email delivery, and only
+              to the extent needed to provide those services. We do not sell your personal
+              information to third parties.
             </p>
           </section>
 

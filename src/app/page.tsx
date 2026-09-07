@@ -35,7 +35,7 @@ export default function Home() {
 
       {/* Newsletter */}
       <section className="relative overflow-hidden bg-ink py-24 text-white">
-        <Image src="/images/banner-girl.jpg" alt="" fill className="object-cover opacity-30" />
+        <Image src="/images/banner-girl.jpg" alt="Athlete training with Xstatic Fit gear" fill className="object-cover opacity-30" />
         <Reveal className="relative z-10 mx-auto flex max-w-xl flex-col items-center gap-3 px-6 text-center">
           <Eyebrow>Subscribe</Eyebrow>
           <h2 className="font-stencil text-3xl uppercase md:text-4xl">

@@ -59,7 +59,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </motion.div>
         </motion.div>
         <div className="mt-4 flex items-center justify-between">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-white">{product.name}</h3>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-white">{product.name}</h2>
         </div>
         <div className="mt-1 flex items-center gap-2 text-sm">
           <span className="font-semibold text-white">$ {product.price.toFixed(2)} USD</span>

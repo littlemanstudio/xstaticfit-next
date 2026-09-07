@@ -1,6 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
+
+const TITLE = "100% Satisfaction Guarantee";
+const DESCRIPTION =
+  "Xstatic Fit backs every product with a 14-day return policy. Shop with confidence, and if it's not right, send it back for a refund or exchange.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: { title: TITLE, description: DESCRIPTION },
+  twitter: { title: TITLE, description: DESCRIPTION },
+  alternates: { canonical: "/guarantee" },
+};
 
 export default function GuaranteePage() {
   return (

@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
-export const metadata = { title: "Terms & Conditions — Xstatic Fit" };
+const TITLE = "Terms & Conditions";
+const DESCRIPTION =
+  "The terms that govern orders, shipping, returns, and use of xstaticfit.com. Read our full terms and conditions before you shop.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  robots: { index: true, follow: true },
+  alternates: { canonical: "/terms" },
+};
 
 export default function TermsPage() {
   return (
@@ -69,7 +79,7 @@ export default function TermsPage() {
           <section>
             <h2 className="mb-3 font-stencil text-xl uppercase text-white">Intellectual Property</h2>
             <p>
-              All content on this site — including text, graphics, logos, and product photography —
+              All content on this site, including text, graphics, logos, and product photography,
               is the property of Xstatic Fit and may not be copied or reused without our written
               permission.
             </p>

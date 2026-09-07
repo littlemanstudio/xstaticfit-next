@@ -1,6 +1,20 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 import ContactForm from "./ContactForm";
+
+const TITLE = "Contact Us";
+const DESCRIPTION =
+  "Get in touch with the Xstatic Fit team for order questions, product support, or general inquiries. We typically respond within 24-48 hours.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: { title: TITLE, description: DESCRIPTION },
+  twitter: { title: TITLE, description: DESCRIPTION },
+  alternates: { canonical: "/contact" },
+};
 
 export default function ContactPage() {
   return (
@@ -19,6 +33,12 @@ export default function ContactPage() {
             Fill out the form below and a representative from our support team will get back to
             you. Usually, we respond to general enquiries within 24-48 hours.
           </p>
+          <p className="mt-4 text-sm leading-relaxed text-white/70">
+            Whether you have a question about an order, need help choosing between our training
+            gear, or just want to talk shop about your training routine, we&rsquo;re happy to
+            help. Xstatic Fit is a small, hands-on team, so you&rsquo;ll hear back from a real
+            person, not a bot.
+          </p>
 
           <div className="mt-10 border-t border-white/10 pt-6">
             <p className="text-xs uppercase tracking-[0.2em] text-white/50">Or reach us here</p>
@@ -26,6 +46,35 @@ export default function ContactPage() {
             <a href="mailto:contact@xstaticfit.com" className="text-sm text-white/70 underline">
               contact@xstaticfit.com
             </a>
+          </div>
+
+          <div className="mt-10 border-t border-white/10 pt-6">
+            <p className="text-xs uppercase tracking-[0.2em] text-white/50">
+              Before you reach out
+            </p>
+            <ul className="mt-3 flex flex-col gap-2 text-sm text-white/70">
+              <li>
+                Questions about delivery times or a return?{" "}
+                <Link href="/shipping" className="underline">
+                  Check our Shipping &amp; Returns page
+                </Link>
+                .
+              </li>
+              <li>
+                Want to know more about how we stand behind our gear?{" "}
+                <Link href="/guarantee" className="underline">
+                  Read our guarantee
+                </Link>
+                .
+              </li>
+              <li>
+                Still browsing?{" "}
+                <Link href="/shop" className="underline">
+                  See the full catalog
+                </Link>
+                .
+              </li>
+            </ul>
           </div>
         </Reveal>
 

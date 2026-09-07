@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
+
+const TITLE = "Our Story";
+const DESCRIPTION =
+  "Founded by 14-year-old Puerto Rico entrepreneur Allan Rosario, Xstatic Fit builds home training gear to help you break barriers and become your best self.";
+
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: { title: TITLE, description: DESCRIPTION, images: ["/images/hero.jpg"] },
+  twitter: { title: TITLE, description: DESCRIPTION, images: ["/images/hero.jpg"] },
+  alternates: { canonical: "/about" },
+};
 
 const REVIEWS = [
   {
@@ -29,8 +42,8 @@ const REVIEWS = [
 export default function AboutPage() {
   return (
     <div className="bg-ink text-white">
-      <section className="relative flex h-[70vh] min-h-[480px] flex-col justify-center overflow-hidden">
-        <Image src="/images/hero.jpg" alt="" fill className="object-cover opacity-40" />
+      <section className="relative -mt-20 flex h-[calc(70vh+5rem)] min-h-[560px] flex-col justify-center overflow-hidden">
+        <Image src="/images/hero.jpg" alt="Xstatic Fit training gear background" fill className="object-cover opacity-40" />
         <div className="relative z-10 mx-6 flex flex-col gap-3 md:mx-[60px]">
           <Eyebrow align="left">Founded by</Eyebrow>
           <h1 className="font-stencil text-4xl uppercase leading-tight md:text-6xl">
@@ -67,7 +80,7 @@ export default function AboutPage() {
           <p>Thank you for supporting us. Please contact us for any questions or inquiries.</p>
         </div>
         <p className="mt-8 font-stencil text-xl uppercase">&ldquo;Welcome Warriors&rdquo;</p>
-        <p className="text-sm text-white/50">— Allan</p>
+        <p className="text-sm text-white/50">Allan</p>
         <Link
           href="/shop"
           className="mt-8 inline-block rounded-[3px] bg-accent px-8 py-4 font-stencil text-xs uppercase tracking-[0.2em] text-ink transition hover:brightness-95"

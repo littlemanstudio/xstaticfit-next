@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PRODUCTS, getProduct, getRelated, FAQS } from "@/lib/products";
+import { absoluteUrl, breadcrumbSchema, SITE_NAME } from "@/lib/seo";
 import ProductCard from "@/components/ProductCard";
 import Eyebrow from "@/components/Eyebrow";
 import AddToCart from "./AddToCart";
@@ -10,6 +12,29 @@ export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
 }
 
+export async function generateMetadata(props: PageProps<"/product/[slug]">): Promise<Metadata> {
+  const { slug } = await props.params;
+  const product = getProduct(slug);
+  if (!product) return {};
+
+  return {
+    title: product.name,
+    description: product.metaDescription,
+    openGraph: {
+      title: product.name,
+      description: product.metaDescription,
+      type: "website",
+      images: [{ url: product.image }],
+    },
+    twitter: {
+      title: product.name,
+      description: product.metaDescription,
+      images: [product.image],
+    },
+    alternates: { canonical: `/product/${product.slug}` },
+  };
+}
+
 export default async function ProductPage(props: PageProps<"/product/[slug]">) {
   const { slug } = await props.params;
   const product = getProduct(slug);
@@ -17,9 +42,74 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
 
   const related = getRelated(slug);
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.metaDescription,
+    image: product.images.map((img) => absoluteUrl(img)),
+    sku: product.slug,
+    brand: { "@type": "Brand", name: SITE_NAME },
+    offers: {
+      "@type": "Offer",
+      url: absoluteUrl(`/product/${product.slug}`),
+      priceCurrency: "USD",
+      price: product.price.toFixed(2),
+      availability: "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+    },
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQS.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+
+  const breadcrumbs = breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Shop", path: "/shop" },
+    { name: product.name, path: `/product/${product.slug}` },
+  ]);
+
   return (
     <div className="bg-ink text-white">
-      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-14 px-6 py-16 md:grid-cols-2 md:px-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
+      />
+
+      <nav aria-label="Breadcrumb" className="mx-auto max-w-[1400px] px-6 pt-6 text-xs text-white/50 md:px-10">
+        <ol className="flex items-center gap-2">
+          <li>
+            <Link href="/" className="hover:text-white">
+              Home
+            </Link>
+          </li>
+          <li aria-hidden>/</li>
+          <li>
+            <Link href="/shop" className="hover:text-white">
+              Shop
+            </Link>
+          </li>
+          <li aria-hidden>/</li>
+          <li className="text-white/80">{product.name}</li>
+        </ol>
+      </nav>
+
+      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-14 px-6 py-10 md:grid-cols-2 md:px-10">
         <ProductGallery images={product.images} name={product.name} onSale={!!product.compareAtPrice} />
 
         <div>

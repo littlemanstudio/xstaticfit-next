@@ -81,6 +81,7 @@ export default function ProductCoverflow({
         <Image
           src={products[currentIndex].image}
           alt=""
+          aria-hidden="true"
           fill
           className="scale-110 object-cover opacity-20 blur-3xl transition-opacity duration-1000"
         />
@@ -90,7 +91,7 @@ export default function ProductCoverflow({
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center px-4">
         <div className="mb-10 flex items-center gap-3">
           <span className="h-px w-9 bg-gradient-to-r from-transparent to-accent" />
-          <h3 className="m-0 text-xs font-semibold uppercase tracking-[0.3em] text-accent">{eyebrow}</h3>
+          <p className="m-0 text-xs font-semibold uppercase tracking-[0.3em] text-accent">{eyebrow}</p>
           <span className="h-px w-9 bg-gradient-to-l from-transparent to-accent" />
         </div>
 
