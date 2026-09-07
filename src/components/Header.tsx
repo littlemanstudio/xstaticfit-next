@@ -139,11 +139,8 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 + i * 0.06, ease: EASE }}
-            className="group flex items-baseline gap-3 border-b border-white/10 py-3 first:pt-0 sm:gap-6"
+            className="group flex items-baseline border-b border-white/10 py-3 first:pt-0"
           >
-            <span className="shrink-0 font-stencil text-xs text-white/30 transition-colors group-hover:text-accent sm:text-sm">
-              0{i + 1}
-            </span>
             <Link href={l.href} onClick={onClose} className="min-w-0 flex-1">
               <RollingText className="font-stencil text-2xl uppercase leading-tight tracking-wide transition-colors group-hover:text-accent sm:text-5xl lg:text-6xl">
                 {l.label}
