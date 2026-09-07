@@ -14,15 +14,11 @@ const LINKS = [
   { href: "/shop", label: "Shop" },
   { href: "/shipping", label: "Shipping & Returns" },
   { href: "/about", label: "About" },
-];
-
-const MENU_LINKS = [
-  { href: "/shop", label: "Shop" },
-  { href: "/shipping", label: "Shipping & Returns" },
-  { href: "/about", label: "About" },
   { href: "/guarantee", label: "Guarantee" },
   { href: "/contact", label: "Contact" },
 ];
+
+const MENU_LINKS = LINKS;
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,9 +51,9 @@ export default function Header() {
               XSTATIC FIT
             </span>
           </Link>
-          <span className="hidden h-px w-6 bg-white/30 md:block" />
+          <span className="hidden h-px w-6 bg-white/30 lg:block" />
 
-          <nav className="hidden items-center text-[11px] font-semibold uppercase tracking-[4px] md:flex">
+          <nav className="hidden items-center text-[11px] font-semibold uppercase tracking-[4px] lg:flex">
             {LINKS.map((l) => {
               const isActive = pathname === l.href;
               return (
@@ -78,7 +74,7 @@ export default function Header() {
         <div className="flex shrink-0 items-center gap-4 sm:gap-6">
           <button
             onClick={() => setMenuOpen(true)}
-            className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[4px] hover:text-accent sm:gap-3"
+            className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[4px] hover:text-accent sm:gap-3 lg:hidden"
             aria-label="Open menu"
           >
             <span className="hidden sm:inline">Menu</span>
