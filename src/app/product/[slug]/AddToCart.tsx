@@ -13,7 +13,7 @@ export default function AddToCart({ product }: { product: Product }) {
     <div className="mt-8 flex flex-col gap-6">
       {product.variants && (
         <div>
-          <p className="mb-2 text-xs uppercase tracking-[0.2em] text-ink/50">
+          <p className="mb-2 text-xs uppercase tracking-[0.2em] text-white/50">
             {product.variantLabel}
           </p>
           <div className="flex gap-2">
@@ -22,7 +22,7 @@ export default function AddToCart({ product }: { product: Product }) {
                 key={v}
                 onClick={() => setVariant(v)}
                 className={`border px-4 py-2 text-xs uppercase tracking-wide transition ${
-                  variant === v ? "border-ink bg-ink text-white" : "border-line text-ink/60"
+                  variant === v ? "border-white bg-white text-ink" : "border-white/20 text-white/60"
                 }`}
               >
                 {v}
@@ -33,7 +33,7 @@ export default function AddToCart({ product }: { product: Product }) {
       )}
 
       <div className="flex items-center gap-4">
-        <div className="flex items-center border border-line">
+        <div className="flex items-center border border-white/20">
           <button className="px-4 py-3" onClick={() => setQty((q) => Math.max(1, q - 1))}>
             −
           </button>
@@ -54,7 +54,7 @@ export default function AddToCart({ product }: { product: Product }) {
               qty
             )
           }
-          className="flex-1 bg-ink py-4 font-stencil text-xs uppercase tracking-[0.2em] text-white transition hover:bg-accent hover:text-ink"
+          className="flex-1 rounded-[3px] bg-accent py-4 font-stencil text-xs uppercase tracking-[0.2em] text-ink transition hover:brightness-95"
         >
           Add to Cart
         </button>

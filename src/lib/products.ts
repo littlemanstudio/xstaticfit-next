@@ -4,6 +4,7 @@ export type Product = {
   price: number;
   compareAtPrice?: number;
   image: string;
+  images: string[];
   category: "training" | "apparel";
   description: string;
   detail?: string;
@@ -17,7 +18,16 @@ export const PRODUCTS: Product[] = [
     name: "Xstatic Carbon Grips",
     price: 40,
     compareAtPrice: 50,
-    image: "/images/grips.jpg",
+    image: "/images/grips/1.jpg",
+    images: [
+      "/images/grips/1.jpg",
+      "/images/grips/2.jpg",
+      "/images/grips/3.jpg",
+      "/images/grips/4.jpg",
+      "/images/grips/5.jpg",
+      "/images/grips/6.jpg",
+      "/images/grips/7.jpg",
+    ],
     category: "training",
     description:
       "Grip with confidence. Built from carbon fiber-infused rubber, these ultra-durable grips protect your hands while giving you maximum control during pull-ups, lifts, and intense workouts. No slips, no rips, just pure performance with every rep.",
@@ -29,7 +39,13 @@ export const PRODUCTS: Product[] = [
     name: "Xstatic Weighted Jump Ropes",
     price: 25,
     compareAtPrice: 35,
-    image: "/images/ropes.jpg",
+    image: "/images/ropes/4.jpg",
+    images: [
+      "/images/ropes/4.jpg",
+      "/images/ropes/1.jpg",
+      "/images/ropes/2.jpg",
+      "/images/ropes/3.jpg",
+    ],
     category: "training",
     description:
       "Cardio your way. Engineered for performance and versatility, the Xstatic Fit Jump Rope features an adjustable length for a custom fit and insertable weights (included) to level up intensity. Built with premium materials for lasting durability, it's perfect for both beginners and pros looking to boost endurance, speed, and strength, all in one sleek tool.",
@@ -39,7 +55,8 @@ export const PRODUCTS: Product[] = [
     name: "Xstatic Door Pull Up Bar",
     price: 60,
     compareAtPrice: 69.99,
-    image: "/images/pullupbar.jpg",
+    image: "/images/pullupbar/1.jpg",
+    images: ["/images/pullupbar/1.jpg", "/images/pullupbar/2.jpg"],
     category: "training",
     description:
       "Turn any room into a gym. Our adjustable pull-up bar extends to fit most door frames or wall spaces. This means no screws, no damage. Built with heavy-duty materials and tested to hold up to 330 lbs, it's the ultimate tool for full upper-body training at home, anytime. Measurements: 72-110cm",

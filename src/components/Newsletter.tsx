@@ -3,7 +3,7 @@
 import { useState, FormEvent } from "react";
 
 export default function Newsletter({
-  label = "Subscribe to our newsletter.",
+  label,
   cta = "Join",
   variant = "dark",
 }: {
@@ -28,7 +28,7 @@ export default function Newsletter({
 
   return (
     <div>
-      <p className={`mb-3 text-sm ${isLight ? "text-ink/70" : "text-white/70"}`}>{label}</p>
+      {label && <p className={`mb-3 text-sm ${isLight ? "text-ink/70" : "text-white/70"}`}>{label}</p>}
       <form onSubmit={handleSubmit} className="flex gap-0">
         <input
           name="email"

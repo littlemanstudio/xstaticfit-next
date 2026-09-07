@@ -31,14 +31,14 @@ export default function ContactForm() {
           name="name"
           required
           placeholder="Your name"
-          className="border border-line px-4 py-3 text-sm outline-none focus:border-ink"
+          className="border border-white/20 bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-white/40 focus:border-white"
         />
         <input
           name="email"
           type="email"
           required
           placeholder="Your email"
-          className="border border-line px-4 py-3 text-sm outline-none focus:border-ink"
+          className="border border-white/20 bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-white/40 focus:border-white"
         />
       </div>
       <textarea
@@ -46,12 +46,12 @@ export default function ContactForm() {
         required
         rows={5}
         placeholder="How can we help?"
-        className="border border-line px-4 py-3 text-sm outline-none focus:border-ink"
+        className="border border-white/20 bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-white/40 focus:border-white"
       />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="self-start bg-ink px-8 py-4 font-stencil text-xs uppercase tracking-[0.2em] text-white transition hover:bg-accent hover:text-ink disabled:opacity-50"
+        className="self-start rounded-[3px] bg-accent px-8 py-4 font-stencil text-xs uppercase tracking-[0.2em] text-ink transition hover:brightness-95 disabled:opacity-50"
       >
         {status === "loading" ? "Sending…" : "Contact Now"}
       </button>

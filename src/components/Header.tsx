@@ -20,39 +20,40 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 bg-ink text-white">
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 md:px-10">
-        <Link href="/" className="flex items-center gap-2">
-          <Image src="/images/logo.png" alt="Xstatic Fit" width={36} height={36} className="invert" />
-          <span className="font-stencil text-lg tracking-[0.15em]">XSTATIC FIT</span>
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/images/logo.png" alt="Xstatic Fit" width={32} height={32} className="invert" />
+            <span className="font-stencil text-lg tracking-[0.1em]">XSTATIC FIT</span>
+          </Link>
+          <span className="hidden h-px w-6 bg-white/30 md:block" />
 
-        <nav className="hidden items-center gap-8 text-xs font-stencil uppercase tracking-[0.15em] md:flex">
-          {LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="hover:text-accent transition-colors">
-              {l.label}
-            </Link>
-          ))}
-        </nav>
+          <nav className="hidden items-center text-[11px] font-semibold uppercase tracking-[4px] md:flex">
+            {LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className="ml-8 hover:text-accent transition-colors">
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-6">
           <button
             onClick={() => setMenuOpen(true)}
-            className="hidden text-xs font-stencil uppercase tracking-[0.15em] hover:text-accent md:block"
+            className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[4px] hover:text-accent"
           >
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M0 1h16M0 6h16M0 11h16" />
+            </svg>
             Menu
           </button>
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="text-xs font-stencil uppercase tracking-[0.15em] md:hidden"
-          >
-            Menu
-          </button>
-          <button onClick={cart.open} className="relative flex items-center gap-2">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <button onClick={cart.open} className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[4px]">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 6h15l-1.5 9h-12L5 3H2" strokeLinecap="round" strokeLinejoin="round" />
               <circle cx="9" cy="20" r="1" />
               <circle cx="18" cy="20" r="1" />
             </svg>
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-ink">
+            Cart
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold normal-case tracking-normal text-ink">
               {count}
             </span>
           </button>

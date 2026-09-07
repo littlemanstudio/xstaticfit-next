@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
+import Eyebrow from "@/components/Eyebrow";
+import Reveal from "@/components/Reveal";
 import { PRODUCTS } from "@/lib/products";
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -19,16 +21,18 @@ export default async function CategoryPage(props: PageProps<"/category/[slug]">)
   const products = PRODUCTS.filter((p) => p.category === slug);
 
   return (
-    <div className="mx-auto max-w-[1400px] px-6 py-16 md:px-10">
-      <div className="mb-12 flex flex-col gap-3">
-        <span className="text-xs uppercase tracking-[0.3em] text-ink/50">Shop by Category</span>
-        <h1 className="font-stencil text-4xl uppercase tracking-wide md:text-5xl">{label}</h1>
-      </div>
+    <div className="min-h-[70vh] bg-ink px-6 py-24 text-white md:px-10">
+      <Reveal className="mx-auto mb-14 flex max-w-2xl flex-col items-center gap-3 text-center">
+        <Eyebrow>Shop by Category</Eyebrow>
+        <h1 className="font-stencil text-4xl uppercase md:text-5xl">{label}</h1>
+      </Reveal>
 
       {products.length === 0 ? (
-        <p className="text-sm text-ink/60">New {label.toLowerCase()} drops coming soon.</p>
+        <p className="text-center text-sm text-white/60">
+          New {label.toLowerCase()} drops coming soon.
+        </p>
       ) : (
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p) => (
             <ProductCard key={p.slug} product={p} />
           ))}
