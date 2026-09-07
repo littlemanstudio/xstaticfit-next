@@ -67,11 +67,11 @@ export default function Header() {
             className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[4px] hover:text-accent sm:gap-3"
             aria-label="Open menu"
           >
-            <span className="relative h-3 w-4 shrink-0">
-              <span className="absolute left-0 top-0 h-[1.5px] w-4 bg-current" />
-              <span className="absolute bottom-0 left-0 h-[1.5px] w-4 bg-current" />
-            </span>
             <span className="hidden sm:inline">Menu</span>
+            <span className="relative h-3 w-3 shrink-0">
+              <span className="absolute left-1/2 top-0 h-full w-[1.5px] -translate-x-1/2 bg-current" />
+              <span className="absolute left-0 top-1/2 h-[1.5px] w-full -translate-y-1/2 bg-current" />
+            </span>
           </button>
           <Magnetic strength={0.4}>
             <button
@@ -107,6 +107,8 @@ export default function Header() {
 }
 
 function MobileMenu({ onClose }: { onClose: () => void }) {
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -132,22 +134,37 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
         </motion.button>
       </div>
 
-      <nav className="flex flex-1 flex-col justify-center gap-1 px-4 py-8 sm:px-6 md:px-10">
-        {MENU_LINKS.map((l, i) => (
-          <motion.div
-            key={l.href}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 + i * 0.06, ease: EASE }}
-            className="group flex items-baseline border-b border-white/10 py-3 first:pt-0"
-          >
-            <Link href={l.href} onClick={onClose} className="min-w-0 flex-1">
-              <RollingText className="font-stencil text-2xl uppercase leading-tight tracking-wide transition-colors group-hover:text-accent sm:text-5xl lg:text-6xl">
-                {l.label}
-              </RollingText>
-            </Link>
-          </motion.div>
-        ))}
+      <nav
+        onMouseLeave={() => setHovered(null)}
+        className="flex flex-1 flex-col justify-center gap-1 px-4 py-8 sm:px-6 md:px-10"
+      >
+        {MENU_LINKS.map((l, i) => {
+          const isDimmed = hovered !== null && hovered !== i;
+          return (
+            <motion.div
+              key={l.href}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 + i * 0.06, ease: EASE }}
+              className="border-b border-white/10 py-3 first:pt-0"
+            >
+              <div
+                onMouseEnter={() => setHovered(i)}
+                className="group flex items-baseline transition-[opacity,filter] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                style={{
+                  opacity: isDimmed ? 0.28 : 1,
+                  filter: isDimmed ? "blur(2px)" : "blur(0px)",
+                }}
+              >
+                <Link href={l.href} onClick={onClose} className="min-w-0 flex-1">
+                  <RollingText className="font-stencil text-2xl uppercase leading-tight tracking-wide transition-colors group-hover:text-accent sm:text-5xl lg:text-6xl">
+                    {l.label}
+                  </RollingText>
+                </Link>
+              </div>
+            </motion.div>
+          );
+        })}
       </nav>
 
       <motion.div
