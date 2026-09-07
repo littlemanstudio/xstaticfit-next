@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import TopBanner from "@/components/TopBanner";
+import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "Xstatic Fit",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${stencil.variable} ${cabin.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
+        <SmoothScroll />
         <TopBanner />
         <Header />
         <CartDrawer />

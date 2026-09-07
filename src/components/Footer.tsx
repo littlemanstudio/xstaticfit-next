@@ -21,7 +21,7 @@ export default function Footer() {
               <Link
                 key={l.href}
                 href={l.href}
-                className="text-[11px] font-semibold uppercase tracking-[3px] text-white/70 hover:text-accent"
+                className="relative py-1 text-[11px] font-semibold uppercase tracking-[3px] text-white/70 transition-colors before:absolute before:inset-x-0 before:bottom-0 before:h-[1.5px] before:origin-left before:scale-x-0 before:bg-accent before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-accent hover:before:scale-x-100"
               >
                 {l.label}
               </Link>

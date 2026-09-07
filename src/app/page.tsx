@@ -1,10 +1,10 @@
 import Image from "next/image";
-import ProductCard from "@/components/ProductCard";
 import Newsletter from "@/components/Newsletter";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 import Hero from "@/components/Hero";
 import CategoryTile from "@/components/CategoryTile";
+import ProductCoverflow from "@/components/ProductCoverflow";
 import { PRODUCTS } from "@/lib/products";
 
 export default function Home() {
@@ -13,22 +13,8 @@ export default function Home() {
       <Hero />
 
       {/* Bestsellers */}
-      <section id="bestsellers" className="bg-ink px-6 py-24 text-white md:px-10">
-        <Reveal className="mx-auto mb-14 flex max-w-2xl flex-col items-center gap-3 text-center">
-          <Eyebrow>Our Bestsellers</Eyebrow>
-          <h2 className="font-stencil text-3xl uppercase md:text-4xl">
-            Home training products + Routines
-          </h2>
-          <p className="text-sm text-white/60">
-            We&rsquo;ll make sure you won&rsquo;t buy anything you won&rsquo;t use. Most of our
-            training equipment includes &ldquo;how to use&rdquo; videos.
-          </p>
-        </Reveal>
-        <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {PRODUCTS.map((p) => (
-            <ProductCard key={p.slug} product={p} />
-          ))}
-        </div>
+      <section id="bestsellers">
+        <ProductCoverflow products={PRODUCTS} eyebrow="Our Bestsellers" />
       </section>
 
       {/* Shop by category */}
