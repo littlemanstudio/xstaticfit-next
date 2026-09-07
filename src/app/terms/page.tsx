@@ -16,13 +16,13 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="bg-ink text-white">
-      <Reveal className="py-24 text-center">
+      <Reveal className="py-14 text-center md:py-24">
         <Eyebrow>Legal</Eyebrow>
         <h1 className="mt-4 font-stencil text-4xl uppercase md:text-5xl">Terms &amp; Conditions</h1>
         <p className="mt-2 text-sm text-white/50">Last updated: September 6, 2026</p>
       </Reveal>
 
-      <Reveal className="mx-auto max-w-3xl border-t border-white/10 px-6 py-20 md:px-10">
+      <Reveal className="mx-auto max-w-3xl border-t border-white/10 px-6 py-12 md:px-10 md:py-20">
         <div className="flex flex-col gap-8 text-sm leading-relaxed text-white/70">
           <p>
             These Terms &amp; Conditions govern your use of xstaticfit.com and any purchase you

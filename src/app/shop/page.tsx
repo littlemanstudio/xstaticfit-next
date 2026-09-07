@@ -71,7 +71,7 @@ export default function ShopPage() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="mx-auto mt-24 max-w-2xl border-t border-white/10 pt-16 text-center">
+        <div className="mx-auto mt-14 max-w-2xl border-t border-white/10 pt-10 text-center md:mt-24 md:pt-16">
           <h2 className="font-stencil text-2xl uppercase">Built for how you actually train</h2>
           <p className="mt-4 text-sm leading-relaxed text-white/60">
             We&rsquo;ll make sure you won&rsquo;t buy anything you won&rsquo;t use. Every product

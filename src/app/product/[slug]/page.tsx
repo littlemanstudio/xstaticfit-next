@@ -148,7 +148,7 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-white/10 py-24">
+      <section className="border-t border-white/10 py-14 md:py-24">
         <div className="mx-auto max-w-3xl px-6 md:px-10">
           <Eyebrow align="left">FAQ</Eyebrow>
           <h2 className="mb-2 mt-3 font-stencil text-2xl uppercase">Frequently asked questions</h2>

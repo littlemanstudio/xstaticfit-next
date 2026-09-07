@@ -6,9 +6,10 @@
   --color-accent: #7ccf00;
   --color-mist: #f6f6f7;
   --color-line: #e6e6e6;
-  /* Real height is published by Header on mount; this is just the
-     first-paint fallback so nothing jumps before JS runs. */
+  /* Real heights are published by Header/TopBanner on mount; these are
+     just the first-paint fallbacks so nothing jumps before JS runs. */
   --header-h: 64px;
+  --banner-h: 33px;
 }
 
 @theme inline {

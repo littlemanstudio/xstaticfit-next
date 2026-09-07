@@ -70,7 +70,7 @@ export default function ProductCoverflow({
 
   return (
     <section
-      className="relative flex min-h-[760px] w-full select-none flex-col items-center justify-center overflow-hidden bg-ink py-16 text-white"
+      className="relative flex min-h-[600px] w-full select-none flex-col items-center justify-center overflow-hidden bg-ink py-8 text-white md:min-h-[760px] md:py-16"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={handleTouchStart}
@@ -89,14 +89,14 @@ export default function ProductCoverflow({
       </div>
 
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center px-4">
-        <div className="mb-10 flex items-center gap-3">
+        <div className="mb-6 flex items-center gap-3 md:mb-10">
           <span className="h-px w-9 bg-gradient-to-r from-transparent to-accent" />
           <p className="m-0 text-xs font-semibold uppercase tracking-[0.3em] text-accent">{eyebrow}</p>
           <span className="h-px w-9 bg-gradient-to-l from-transparent to-accent" />
         </div>
 
         {/* Coverflow stage */}
-        <div className="relative mb-10 flex h-[520px] w-full items-center justify-center" style={{ perspective: 1400 }}>
+        <div className="relative mb-6 flex h-[520px] w-full items-center justify-center md:mb-10" style={{ perspective: 1400 }}>
           {products.map((product, idx) => {
             const offset = signedOffset(idx, currentIndex, total);
             const isCenter = offset === 0;

@@ -61,7 +61,7 @@ export default async function CategoryPage(props: PageProps<"/category/[slug]">)
   ]);
 
   return (
-    <div className="min-h-[70vh] bg-ink px-6 py-24 text-white md:px-10">
+    <div className="min-h-[70vh] bg-ink px-6 py-14 text-white md:px-10 md:py-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}

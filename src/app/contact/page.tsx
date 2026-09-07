@@ -19,12 +19,12 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="bg-ink text-white">
-      <Reveal className="py-24 text-center">
+      <Reveal className="py-14 text-center md:py-24">
         <Eyebrow>Contact Us</Eyebrow>
         <h1 className="mt-4 font-stencil text-4xl uppercase md:text-5xl">Get in Touch</h1>
       </Reveal>
 
-      <section className="mx-auto grid max-w-[1400px] grid-cols-1 gap-14 border-t border-white/10 px-6 py-20 md:grid-cols-2 md:px-10">
+      <section className="mx-auto grid max-w-[1400px] grid-cols-1 gap-14 border-t border-white/10 px-6 py-12 md:grid-cols-2 md:px-10 md:py-20">
         <Reveal>
           <h2 className="font-stencil text-2xl uppercase">
             Our customer support team is here to help

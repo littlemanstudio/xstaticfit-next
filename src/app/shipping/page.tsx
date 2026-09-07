@@ -18,13 +18,13 @@ export const metadata: Metadata = {
 export default function ShippingPage() {
   return (
     <div className="bg-ink text-white">
-      <Reveal className="py-24 text-center">
+      <Reveal className="py-14 text-center md:py-24">
         <Eyebrow>Shipping Worldwide</Eyebrow>
         <h1 className="mt-4 font-stencil text-4xl uppercase md:text-5xl">Shipping &amp; Returns</h1>
         <p className="mt-2 text-sm text-white/60">Delivering rock solid dependability</p>
       </Reveal>
 
-      <Reveal className="mx-auto max-w-3xl border-t border-white/10 px-6 py-20 md:px-10">
+      <Reveal className="mx-auto max-w-3xl border-t border-white/10 px-6 py-12 md:px-10 md:py-20">
         <div className="flex flex-col gap-4">
           <h2 className="font-stencil text-2xl uppercase">Shipping</h2>
           <p className="text-sm leading-relaxed text-white/70">

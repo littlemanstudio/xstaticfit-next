@@ -18,14 +18,14 @@ export const metadata: Metadata = {
 export default function GuaranteePage() {
   return (
     <div className="bg-ink text-white">
-      <Reveal className="py-24 text-center">
+      <Reveal className="py-14 text-center md:py-24">
         <Eyebrow>Guarantee</Eyebrow>
         <h1 className="mt-4 font-stencil text-4xl uppercase md:text-5xl">
           100% Satisfaction Guaranteed
         </h1>
       </Reveal>
 
-      <Reveal className="mx-auto max-w-3xl border-t border-white/10 px-6 py-20 text-center md:px-10">
+      <Reveal className="mx-auto max-w-3xl border-t border-white/10 px-6 py-12 text-center md:px-10 md:py-20">
         <p className="text-lg font-stencil uppercase text-white">
           &ldquo;We stand behind the quality of everything we make.&rdquo;
         </p>

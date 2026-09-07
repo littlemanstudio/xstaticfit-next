@@ -58,7 +58,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Reveal className="mx-auto max-w-3xl px-6 py-24 text-center md:px-10">
+      <Reveal className="mx-auto max-w-3xl px-6 py-14 text-center md:px-10 md:py-24">
         <Eyebrow>Our Story</Eyebrow>
         <h2 className="mt-4 font-stencil text-3xl uppercase md:text-4xl">
           Founded by local young entrepreneurs
@@ -92,9 +92,9 @@ export default function AboutPage() {
         </Link>
       </Reveal>
 
-      <section className="border-t border-white/10 py-24">
+      <section className="border-t border-white/10 py-14 md:py-24">
         <div className="mx-auto max-w-[1400px] px-6 md:px-10">
-          <Reveal className="mb-12 flex flex-col items-center gap-3 text-center">
+          <Reveal className="mb-8 flex flex-col items-center gap-3 text-center md:mb-12">
             <Eyebrow>Reviews</Eyebrow>
             <h2 className="font-stencil text-3xl uppercase">What people are saying</h2>
           </Reveal>
@@ -110,7 +110,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="border-t border-white/10 py-20 text-center">
+      <section className="border-t border-white/10 py-12 text-center md:py-20">
         <Eyebrow>Xstatic Fit</Eyebrow>
         <h2 className="mt-3 font-stencil text-3xl uppercase">Now receiving orders</h2>
         <p className="mt-2 text-sm text-white/60">Stay tuned for new arrivals and offers.</p>

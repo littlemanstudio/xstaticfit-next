@@ -18,8 +18,8 @@ export default function Home() {
       </section>
 
       {/* Shop by category */}
-      <section className="bg-ink px-6 py-24 text-white md:px-10">
-        <Reveal className="mx-auto mb-14 flex max-w-2xl flex-col items-center gap-3 text-center">
+      <section className="bg-ink px-6 py-12 text-white md:px-10 md:py-24">
+        <Reveal className="mx-auto mb-6 flex max-w-2xl flex-col items-center gap-3 text-center md:mb-14">
           <Eyebrow>Shop by category</Eyebrow>
           <h2 className="font-stencil text-3xl uppercase md:text-4xl">Join the Xstatic Fit Club</h2>
           <p className="text-sm text-white/60">
@@ -35,7 +35,7 @@ export default function Home() {
       </section>
 
       {/* Newsletter */}
-      <section className="relative overflow-hidden bg-ink py-24 text-white">
+      <section className="relative overflow-hidden bg-ink py-16 text-white md:py-24">
         <Image src="/images/banner-girl.jpg" alt="Athlete training with Xstatic Fit gear" fill className="object-cover opacity-30" />
         <Reveal className="relative z-10 mx-auto flex max-w-xl flex-col items-center gap-3 px-6 text-center">
           <Eyebrow>Subscribe</Eyebrow>
