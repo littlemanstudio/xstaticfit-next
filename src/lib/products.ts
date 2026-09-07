@@ -18,10 +18,10 @@ export const PRODUCTS: Product[] = [
     name: "Xstatic Carbon Grips",
     price: 40,
     compareAtPrice: 50,
-    image: "/images/grips/1.jpg",
+    image: "/images/grips/2.jpg",
     images: [
-      "/images/grips/1.jpg",
       "/images/grips/2.jpg",
+      "/images/grips/1.jpg",
       "/images/grips/3.jpg",
       "/images/grips/4.jpg",
       "/images/grips/5.jpg",
