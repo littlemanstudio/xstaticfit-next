@@ -8,11 +8,13 @@ export default function CartDrawer() {
   const cart = useCart();
   const hydrated = useHasHydrated();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (!hydrated || !cart.isOpen) return null;
 
   async function checkout() {
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
@@ -20,10 +22,13 @@ export default function CartDrawer() {
         body: JSON.stringify({ items: cart.items }),
       });
       const data = await res.json();
-      if (data.url) window.location.href = data.url;
-      else alert(data.error || "Checkout failed. Try again.");
+      if (data.url) {
+        window.location.href = data.url;
+        return;
+      }
+      setError(data.error || "Checkout failed. Try again.");
     } catch {
-      alert("Checkout failed. Try again.");
+      setError("Checkout failed. Try again.");
     } finally {
       setLoading(false);
     }
@@ -103,6 +108,7 @@ export default function CartDrawer() {
           >
             {loading ? "Redirecting…" : "Continue to Checkout"}
           </button>
+          {error && <p className="mt-3 text-center text-xs text-red-400">{error}</p>}
         </div>
       </div>
     </div>

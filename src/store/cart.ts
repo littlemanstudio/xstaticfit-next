@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+
+function subscribeNoop() {
+  return () => {};
+}
 
 export type CartItem = {
   slug: string;
@@ -26,9 +30,11 @@ type CartState = {
 };
 
 export function useHasHydrated() {
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
-  return hydrated;
+  return useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false
+  );
 }
 
 export const useCart = create<CartState>()(

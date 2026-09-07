@@ -86,6 +86,14 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
           </Link>
         ))}
       </nav>
+      <div className="absolute bottom-8 left-6 flex gap-6 text-[11px] font-semibold uppercase tracking-[3px] text-white/50 md:left-10">
+        <Link href="/privacy" onClick={onClose} className="hover:text-white">
+          Privacy Policy
+        </Link>
+        <Link href="/terms" onClick={onClose} className="hover:text-white">
+          Terms &amp; Conditions
+        </Link>
+      </div>
     </div>
   );
 }
