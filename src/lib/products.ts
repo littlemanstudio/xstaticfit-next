@@ -7,6 +7,7 @@ export type Product = {
   images: string[];
   category: "training" | "apparel";
   description: string;
+  metaDescription: string;
   detail?: string;
   variantLabel?: string;
   variants?: string[];
@@ -31,6 +32,8 @@ export const PRODUCTS: Product[] = [
     category: "training",
     description:
       "Grip with confidence. Built from carbon fiber-infused rubber, these ultra-durable grips protect your hands while giving you maximum control during pull-ups, lifts, and intense workouts. No slips, no rips, just pure performance with every rep.",
+    metaDescription:
+      "Carbon fiber-infused Xstatic Grips protect your hands through pull-ups, lifts, and max-intensity sets. No slips, no rips, just grip you can trust.",
     variantLabel: "Select Xstatic Grips",
     variants: ["Grips"],
   },
@@ -49,6 +52,8 @@ export const PRODUCTS: Product[] = [
     category: "training",
     description:
       "Cardio your way. Engineered for performance and versatility, the Xstatic Fit Jump Rope features an adjustable length for a custom fit and insertable weights (included) to level up intensity. Built with premium materials for lasting durability, it's perfect for both beginners and pros looking to boost endurance, speed, and strength, all in one sleek tool.",
+    metaDescription:
+      "Adjustable weighted jump rope built for real cardio gains. Insertable weights, premium materials, and a custom fit for beginners and pros alike.",
   },
   {
     slug: "xstatic-door-pull-up-bar",
@@ -60,6 +65,8 @@ export const PRODUCTS: Product[] = [
     category: "training",
     description:
       "Turn any room into a gym. Our adjustable pull-up bar extends to fit most door frames or wall spaces. This means no screws, no damage. Built with heavy-duty materials and tested to hold up to 330 lbs, it's the ultimate tool for full upper-body training at home, anytime. Measurements: 72-110cm",
+    metaDescription:
+      "Heavy-duty adjustable door pull-up bar, no screws required. Holds up to 330 lbs and turns any doorway into a full upper-body home gym.",
     variantLabel: "Select Width",
     variants: ["72-110 cm"],
   },

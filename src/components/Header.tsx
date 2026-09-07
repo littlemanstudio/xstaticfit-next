@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart, useHasHydrated } from "@/store/cart";
 import { EASE } from "@/lib/motion";
@@ -26,13 +26,27 @@ const MENU_LINKS = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const cart = useCart();
   const hydrated = useHasHydrated();
   const count = hydrated ? cart.count() : 0;
   const pathname = usePathname();
 
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 40);
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-40 bg-ink text-white">
+    <header
+      className={`sticky top-0 z-40 text-white transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        scrolled ? "bg-ink" : "bg-transparent"
+      }`}
+    >
       <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 md:px-10">
         <div className="flex min-w-0 items-center gap-4">
           <Link href="/" className="flex shrink-0 items-center gap-2">
@@ -68,9 +82,10 @@ export default function Header() {
             aria-label="Open menu"
           >
             <span className="hidden sm:inline">Menu</span>
-            <span className="relative h-3 w-3 shrink-0">
-              <span className="absolute left-1/2 top-0 h-full w-[1.5px] -translate-x-1/2 bg-current" />
-              <span className="absolute left-0 top-1/2 h-[1.5px] w-full -translate-y-1/2 bg-current" />
+            <span className="relative flex h-3 w-4 shrink-0 flex-col justify-between">
+              <span className="h-[1.5px] w-full bg-current" />
+              <span className="h-[1.5px] w-full bg-current" />
+              <span className="h-[1.5px] w-full bg-current" />
             </span>
           </button>
           <Magnetic strength={0.4}>
