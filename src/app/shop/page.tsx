@@ -20,7 +20,10 @@ export default function ShopPage() {
 
   return (
     <div className="bg-ink text-white">
-      <section className="relative -mt-20 flex h-[calc(70vh+5rem)] min-h-[520px] flex-col justify-center overflow-hidden">
+      <section
+        style={{ marginTop: "calc(var(--header-h) * -1)", height: "calc(70vh + var(--header-h))" }}
+        className="relative flex min-h-[440px] flex-col justify-center overflow-hidden"
+      >
         <Image src="/images/hero.jpg" alt="Xstatic Fit training gear background" fill className="object-cover opacity-40" />
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart, useHasHydrated } from "@/store/cart";
 import { EASE } from "@/lib/motion";
@@ -23,6 +23,7 @@ const MENU_LINKS = LINKS;
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   const cart = useCart();
   const hydrated = useHasHydrated();
   const count = hydrated ? cart.count() : 0;
@@ -37,8 +38,26 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Publish the header's real rendered height as a CSS var so hero
+  // sections can overlap it exactly, no more no less, regardless of
+  // breakpoint. Overlapping too far bleeds into the promo banner above it.
+  useEffect(() => {
+    function publishHeight() {
+      if (headerRef.current) {
+        document.documentElement.style.setProperty(
+          "--header-h",
+          `${headerRef.current.offsetHeight}px`
+        );
+      }
+    }
+    publishHeight();
+    window.addEventListener("resize", publishHeight);
+    return () => window.removeEventListener("resize", publishHeight);
+  }, []);
+
   return (
     <header
+      ref={headerRef}
       className={`sticky top-0 z-40 text-white transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
         scrolled ? "bg-ink" : "bg-transparent"
       }`}

@@ -42,7 +42,10 @@ const REVIEWS = [
 export default function AboutPage() {
   return (
     <div className="bg-ink text-white">
-      <section className="relative -mt-20 flex h-[calc(70vh+5rem)] min-h-[560px] flex-col justify-center overflow-hidden">
+      <section
+        style={{ marginTop: "calc(var(--header-h) * -1)", height: "calc(70vh + var(--header-h))" }}
+        className="relative flex min-h-[480px] flex-col justify-center overflow-hidden"
+      >
         <Image src="/images/hero.jpg" alt="Xstatic Fit training gear background" fill className="object-cover opacity-40" />
         <div className="relative z-10 mx-6 flex flex-col gap-3 md:mx-[60px]">
           <Eyebrow align="left">Founded by</Eyebrow>
