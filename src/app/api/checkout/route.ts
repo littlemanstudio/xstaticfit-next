@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
   const isPublicHttps = origin.startsWith("https://");
 
   const line_items: import("stripe").Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+  const productNames: string[] = [];
 
   for (const item of items) {
     const product = getProduct(item.slug);
@@ -40,12 +41,14 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+    productNames.push(item.qty > 1 ? `${product.name} x${item.qty}` : product.name);
   }
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items,
     shipping_address_collection: { allowed_countries: ["US", "PR", "CA"] },
+    payment_intent_data: { description: productNames.join(", ") },
     success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/checkout/cancel`,
   });
