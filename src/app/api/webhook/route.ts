@@ -137,6 +137,7 @@ async function sendOrderEmail(opts: {
   text: string;
   html: string;
   replyTo?: string;
+  bcc?: string;
 }) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) {
@@ -150,6 +151,7 @@ async function sendOrderEmail(opts: {
       from: ORDERS_FROM,
       to: opts.to,
       reply_to: opts.replyTo,
+      bcc: opts.bcc,
       subject: opts.subject,
       text: opts.text,
       html: opts.html,
@@ -265,6 +267,7 @@ export async function POST(request: NextRequest) {
         text: customerText,
         html: renderOrderHtml(order, "customer"),
         replyTo: OWNER_EMAIL,
+        bcc: OWNER_EMAIL,
       });
     }
   }
