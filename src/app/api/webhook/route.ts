@@ -48,15 +48,15 @@ type OrderEmail = {
 function renderOrderHtml(o: OrderEmail, kind: "owner" | "customer") {
   const isOwner = kind === "owner";
   const label = (t: string) =>
-    `<div style="font-family:${HEADING_FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:${MUTED};margin:0 0 8px;">${t}</div>`;
+    `<div style="font-family:${HEADING_FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:${MUTED};-webkit-text-fill-color:${MUTED};margin:0 0 8px;">${t}</div>`;
 
   const addressHtml = o.addressLines.map((l) => esc(l)).join("<br>");
 
   const itemRows = o.items
     .map(
       (i) => `<tr>
-        <td style="padding:12px 0;border-bottom:1px solid ${LINE};font-family:${BODY_FONT};font-size:15px;color:${TEXT};">${esc(i.label)}</td>
-        <td align="right" style="padding:12px 0;border-bottom:1px solid ${LINE};font-family:${HEADING_FONT};font-size:15px;color:${TEXT};white-space:nowrap;">x ${i.qty}</td>
+        <td style="padding:12px 0;border-bottom:1px solid ${LINE};font-family:${BODY_FONT};font-size:15px;color:${TEXT};-webkit-text-fill-color:${TEXT};">${esc(i.label)}</td>
+        <td align="right" style="padding:12px 0;border-bottom:1px solid ${LINE};font-family:${HEADING_FONT};font-size:15px;color:${TEXT};-webkit-text-fill-color:${TEXT};white-space:nowrap;">x ${i.qty}</td>
       </tr>`
     )
     .join("");
@@ -78,20 +78,20 @@ body { background: ${PAGE} !important; }
 <tr><td align="center">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="max-width:560px;${BG_CARD}">
     <tr><td bgcolor="${CARD}" style="${BG_CARD}padding:28px 28px 22px;border-bottom:4px solid ${ACCENT};">
-      <div style="font-family:${HEADING_FONT};font-size:30px;letter-spacing:4px;color:${TEXT};text-transform:uppercase;">Xstatic Fit</div>
+      <div style="font-family:${HEADING_FONT};font-size:30px;letter-spacing:4px;color:${TEXT};-webkit-text-fill-color:${TEXT};text-transform:uppercase;">Xstatic Fit</div>
     </td></tr>
 
     <tr><td bgcolor="${CARD}" style="${BG_CARD}padding:32px 28px 8px;">
-      <div style="font-family:${HEADING_FONT};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${ACCENT};">${isOwner ? "New order" : "Order confirmed"}</div>
-      <div style="font-family:${HEADING_FONT};font-size:48px;line-height:1.1;color:${TEXT};margin-top:6px;">$${esc(o.total)}</div>
-      <div style="font-family:${BODY_FONT};font-size:14px;color:${MUTED};margin-top:2px;">${esc(o.currency)}</div>
+      <div style="font-family:${HEADING_FONT};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${ACCENT};-webkit-text-fill-color:${ACCENT};">${isOwner ? "New order" : "Order confirmed"}</div>
+      <div style="font-family:${HEADING_FONT};font-size:48px;line-height:1.1;color:${TEXT};-webkit-text-fill-color:${TEXT};margin-top:6px;">$${esc(o.total)}</div>
+      <div style="font-family:${BODY_FONT};font-size:14px;color:${MUTED};-webkit-text-fill-color:${MUTED};margin-top:2px;">${esc(o.currency)}</div>
     </td></tr>
 
     <tr><td bgcolor="${CARD}" style="${BG_CARD}padding:20px 28px 8px;">
       <div style="${BG_PANEL}border-left:4px solid ${ACCENT};padding:18px 20px;">
         ${label(isOwner ? "Ship to" : "Shipping to")}
-        <div style="font-family:${HEADING_FONT};font-size:24px;letter-spacing:1px;color:${TEXT};margin-bottom:6px;">${esc(o.name)}</div>
-        <div style="font-family:${BODY_FONT};font-size:16px;line-height:1.5;color:${TEXT};">${addressHtml}</div>
+        <div style="font-family:${HEADING_FONT};font-size:24px;letter-spacing:1px;color:${TEXT};-webkit-text-fill-color:${TEXT};margin-bottom:6px;">${esc(o.name)}</div>
+        <div style="font-family:${BODY_FONT};font-size:16px;line-height:1.5;color:${TEXT};-webkit-text-fill-color:${TEXT};">${addressHtml}</div>
       </div>
     </td></tr>
 
@@ -99,7 +99,7 @@ body { background: ${PAGE} !important; }
       isOwner
         ? `<tr><td bgcolor="${CARD}" style="${BG_CARD}padding:16px 28px 8px;">
       ${label("Contact")}
-      <div style="font-family:${BODY_FONT};font-size:15px;line-height:1.7;color:${TEXT};">
+      <div style="font-family:${BODY_FONT};font-size:15px;line-height:1.7;color:${TEXT};-webkit-text-fill-color:${TEXT};">
         ${esc(o.email)}${o.phone === "none" ? "" : `<br>${esc(o.phone)}`}
       </div>
     </td></tr>`
@@ -115,11 +115,11 @@ body { background: ${PAGE} !important; }
       ${
         isOwner
           ? `<a href="${esc(o.stripeUrl)}" style="display:inline-block;background:${ACCENT};color:#0d0d0d;font-family:${HEADING_FONT};font-size:14px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 26px;">View in Stripe</a>`
-          : `<div style="font-family:${BODY_FONT};font-size:15px;line-height:1.6;color:${TEXT};">Thank you for your order. If anything looks off, just reply to this email and we will sort it out.</div>`
+          : `<div style="font-family:${BODY_FONT};font-size:15px;line-height:1.6;color:${TEXT};-webkit-text-fill-color:${TEXT};">Thank you for your order. If anything looks off, just reply to this email and we will sort it out.</div>`
       }
     </td></tr>
 
-    <tr><td bgcolor="${CARD}" style="${BG_CARD}border-top:1px solid ${LINE};padding:16px 28px;font-family:${BODY_FONT};font-size:12px;color:${MUTED};">
+    <tr><td bgcolor="${CARD}" style="${BG_CARD}border-top:1px solid ${LINE};padding:16px 28px;font-family:${BODY_FONT};font-size:12px;color:${MUTED};-webkit-text-fill-color:${MUTED};">
       ${isOwner ? "Sent automatically when an order is paid on xstaticfit.com" : "Xstatic Fit &middot; xstaticfit.com"}
     </td></tr>
   </table>
