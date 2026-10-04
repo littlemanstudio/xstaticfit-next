@@ -41,7 +41,8 @@ type OrderEmail = {
   stripeUrl: string;
 };
 
-function renderOrderHtml(o: OrderEmail) {
+function renderOrderHtml(o: OrderEmail, kind: "owner" | "customer") {
+  const isOwner = kind === "owner";
   const label = (t: string) =>
     `<div style="font-family:${HEADING_FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:${MUTED};margin:0 0 8px;">${t}</div>`;
 
@@ -75,25 +76,29 @@ function renderOrderHtml(o: OrderEmail) {
     </td></tr>
 
     <tr><td bgcolor="${CARD}" style="background:${CARD};padding:32px 28px 8px;">
-      <div style="font-family:${HEADING_FONT};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${ACCENT};">New order</div>
+      <div style="font-family:${HEADING_FONT};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${ACCENT};">${isOwner ? "New order" : "Order confirmed"}</div>
       <div style="font-family:${HEADING_FONT};font-size:48px;line-height:1.1;color:${TEXT};margin-top:6px;">$${esc(o.total)}</div>
       <div style="font-family:${BODY_FONT};font-size:14px;color:${MUTED};margin-top:2px;">${esc(o.currency)}</div>
     </td></tr>
 
     <tr><td bgcolor="${CARD}" style="background:${CARD};padding:20px 28px 8px;">
       <div style="background:${PANEL};border-left:4px solid ${ACCENT};padding:18px 20px;">
-        ${label("Ship to")}
+        ${label(isOwner ? "Ship to" : "Shipping to")}
         <div style="font-family:${HEADING_FONT};font-size:24px;letter-spacing:1px;color:${TEXT};margin-bottom:6px;">${esc(o.name)}</div>
         <div style="font-family:${BODY_FONT};font-size:16px;line-height:1.5;color:${TEXT};">${addressHtml}</div>
       </div>
     </td></tr>
 
-    <tr><td bgcolor="${CARD}" style="background:${CARD};padding:16px 28px 8px;">
+    ${
+      isOwner
+        ? `<tr><td bgcolor="${CARD}" style="background:${CARD};padding:16px 28px 8px;">
       ${label("Contact")}
       <div style="font-family:${BODY_FONT};font-size:15px;line-height:1.7;color:${TEXT};">
         ${esc(o.email)}${o.phone === "none" ? "" : `<br>${esc(o.phone)}`}
       </div>
-    </td></tr>
+    </td></tr>`
+        : ""
+    }
 
     <tr><td bgcolor="${CARD}" style="background:${CARD};padding:16px 28px 8px;">
       ${label("Items")}
@@ -101,11 +106,15 @@ function renderOrderHtml(o: OrderEmail) {
     </td></tr>
 
     <tr><td bgcolor="${CARD}" style="background:${CARD};padding:24px 28px 32px;">
-      <a href="${esc(o.stripeUrl)}" style="display:inline-block;background:${ACCENT};color:#0d0d0d;font-family:${HEADING_FONT};font-size:14px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 26px;">View in Stripe</a>
+      ${
+        isOwner
+          ? `<a href="${esc(o.stripeUrl)}" style="display:inline-block;background:${ACCENT};color:#0d0d0d;font-family:${HEADING_FONT};font-size:14px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 26px;">View in Stripe</a>`
+          : `<div style="font-family:${BODY_FONT};font-size:15px;line-height:1.6;color:${TEXT};">Thank you for your order. If anything looks off, just reply to this email and we will sort it out.</div>`
+      }
     </td></tr>
 
     <tr><td bgcolor="${CARD}" style="background:${CARD};border-top:1px solid ${LINE};padding:16px 28px;font-family:${BODY_FONT};font-size:12px;color:${MUTED};">
-      Sent automatically when an order is paid on xstaticfit.com
+      ${isOwner ? "Sent automatically when an order is paid on xstaticfit.com" : "Xstatic Fit &middot; xstaticfit.com"}
     </td></tr>
   </table>
 </td></tr>
@@ -113,24 +122,34 @@ function renderOrderHtml(o: OrderEmail) {
 </body></html>`;
 }
 
-async function sendOrderEmail(subject: string, text: string, html: string) {
+const ORDERS_FROM = "Xstatic Fit <orders@xstaticfit.com>";
+const OWNER_EMAIL = process.env.CONTACT_TO_EMAIL ?? "xstaticfit@gmail.com";
+
+async function sendOrderEmail(opts: {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+  replyTo?: string;
+}) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) {
-    console.log("Order email skipped (RESEND_API_KEY not set):", subject);
+    console.log("Order email skipped (RESEND_API_KEY not set):", opts.subject);
     return;
   }
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: process.env.CONTACT_FROM_EMAIL ?? "Xstatic Fit Orders <onboarding@resend.dev>",
-      to: process.env.CONTACT_TO_EMAIL ?? "xstaticfit@gmail.com",
-      subject,
-      text,
-      html,
+      from: ORDERS_FROM,
+      to: opts.to,
+      reply_to: opts.replyTo,
+      subject: opts.subject,
+      text: opts.text,
+      html: opts.html,
     }),
   });
-  if (!res.ok) console.error("Order email failed:", res.status, await res.text());
+  if (!res.ok) console.error("Order email failed:", opts.to, res.status, await res.text());
 }
 
 export async function POST(request: NextRequest) {
@@ -210,7 +229,38 @@ export async function POST(request: NextRequest) {
       `Stripe: ${order.stripeUrl}`,
     ].join("\n");
 
-    await sendOrderEmail(`New order $${total} - ${name}`, text, renderOrderHtml(order));
+    await sendOrderEmail({
+      to: OWNER_EMAIL,
+      subject: `New order $${total} - ${name}`,
+      text,
+      html: renderOrderHtml(order, "owner"),
+      replyTo: email === "none" ? undefined : email,
+    });
+
+    if (email !== "none") {
+      const customerText = [
+        "Your Xstatic Fit order is confirmed.",
+        "",
+        "Shipping to:",
+        name,
+        addressLines.join("\n"),
+        "",
+        "Items:",
+        items.map((i) => `${i.qty} x ${i.label}`).join("\n") || "(none)",
+        "",
+        `Total: $${total} ${order.currency}`,
+        "",
+        "If anything looks off, just reply to this email.",
+      ].join("\n");
+
+      await sendOrderEmail({
+        to: email,
+        subject: "Your Xstatic Fit order is confirmed",
+        text: customerText,
+        html: renderOrderHtml(order, "customer"),
+        replyTo: OWNER_EMAIL,
+      });
+    }
   }
 
   return NextResponse.json({ received: true });
