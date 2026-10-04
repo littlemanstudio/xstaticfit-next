@@ -12,11 +12,14 @@ type Address = {
 
 type ShippingDetails = { name?: string | null; address?: Address | null };
 
-const INK = "#0d0d0d";
+const PAGE = "#000000";
+const CARD = "#0d0d0d";
+const PANEL = "#1a1a1a";
 const ACCENT = "#7ccf00";
-const MIST = "#f6f6f7";
-const LINE = "#e6e6e6";
-const HEADING_FONT = "Oswald, 'Arial Narrow', Impact, Arial, sans-serif";
+const TEXT = "#ffffff";
+const MUTED = "#8a8a8a";
+const LINE = "#2a2a2a";
+const HEADING_FONT = "'Oswald Stencil', Impact, 'Arial Narrow Bold', 'Arial Narrow', sans-serif";
 const BODY_FONT = "Cabin, Helvetica, Arial, sans-serif";
 
 function esc(value: string) {
@@ -40,62 +43,68 @@ type OrderEmail = {
 
 function renderOrderHtml(o: OrderEmail) {
   const label = (t: string) =>
-    `<div style="font-family:${HEADING_FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#777;margin:0 0 8px;">${t}</div>`;
+    `<div style="font-family:${HEADING_FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:${MUTED};margin:0 0 8px;">${t}</div>`;
 
   const addressHtml = o.addressLines.map((l) => esc(l)).join("<br>");
 
   const itemRows = o.items
     .map(
       (i) => `<tr>
-        <td style="padding:12px 0;border-bottom:1px solid ${LINE};font-family:${BODY_FONT};font-size:15px;color:${INK};">${esc(i.label)}</td>
-        <td align="right" style="padding:12px 0;border-bottom:1px solid ${LINE};font-family:${HEADING_FONT};font-size:15px;color:${INK};white-space:nowrap;">x ${i.qty}</td>
+        <td style="padding:12px 0;border-bottom:1px solid ${LINE};font-family:${BODY_FONT};font-size:15px;color:${TEXT};">${esc(i.label)}</td>
+        <td align="right" style="padding:12px 0;border-bottom:1px solid ${LINE};font-family:${HEADING_FONT};font-size:15px;color:${TEXT};white-space:nowrap;">x ${i.qty}</td>
       </tr>`
     )
     .join("");
 
   return `<!doctype html>
-<html><body style="margin:0;padding:0;background:${MIST};">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${MIST};padding:24px 12px;">
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<style>
+@font-face { font-family: 'Oswald Stencil'; src: url('https://www.xstaticfit.com/fonts/Oswald-Stencil.ttf') format('truetype'); font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body style="margin:0;padding:0;background:${PAGE};" bgcolor="${PAGE}">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${PAGE}" style="background:${PAGE};padding:24px 12px;">
 <tr><td align="center">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;">
-    <tr><td style="background:${INK};padding:20px 28px;border-bottom:4px solid ${ACCENT};">
-      <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-        <td><img src="https://www.xstaticfit.com/images/logo-white.png" width="44" height="44" alt="" style="display:block;border:0;"></td>
-        <td style="padding-left:14px;font-family:${HEADING_FONT};font-size:22px;letter-spacing:3px;color:#ffffff;text-transform:uppercase;">Xstatic Fit</td>
-      </tr></table>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="max-width:560px;background:${CARD};">
+    <tr><td bgcolor="${CARD}" style="background:${CARD};padding:28px 28px 22px;border-bottom:4px solid ${ACCENT};">
+      <div style="font-family:${HEADING_FONT};font-size:30px;letter-spacing:4px;color:${TEXT};text-transform:uppercase;">Xstatic Fit</div>
     </td></tr>
 
-    <tr><td style="padding:32px 28px 8px;">
+    <tr><td bgcolor="${CARD}" style="background:${CARD};padding:32px 28px 8px;">
       <div style="font-family:${HEADING_FONT};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${ACCENT};">New order</div>
-      <div style="font-family:${HEADING_FONT};font-size:44px;line-height:1.1;color:${INK};margin-top:6px;">$${esc(o.total)}</div>
-      <div style="font-family:${BODY_FONT};font-size:14px;color:#777;margin-top:2px;">${esc(o.currency)}</div>
+      <div style="font-family:${HEADING_FONT};font-size:48px;line-height:1.1;color:${TEXT};margin-top:6px;">$${esc(o.total)}</div>
+      <div style="font-family:${BODY_FONT};font-size:14px;color:${MUTED};margin-top:2px;">${esc(o.currency)}</div>
     </td></tr>
 
-    <tr><td style="padding:20px 28px 8px;">
-      <div style="background:${MIST};border-left:4px solid ${ACCENT};padding:18px 20px;">
+    <tr><td bgcolor="${CARD}" style="background:${CARD};padding:20px 28px 8px;">
+      <div style="background:${PANEL};border-left:4px solid ${ACCENT};padding:18px 20px;">
         ${label("Ship to")}
-        <div style="font-family:${HEADING_FONT};font-size:22px;color:${INK};margin-bottom:6px;">${esc(o.name)}</div>
-        <div style="font-family:${BODY_FONT};font-size:16px;line-height:1.5;color:${INK};">${addressHtml}</div>
+        <div style="font-family:${HEADING_FONT};font-size:24px;letter-spacing:1px;color:${TEXT};margin-bottom:6px;">${esc(o.name)}</div>
+        <div style="font-family:${BODY_FONT};font-size:16px;line-height:1.5;color:${TEXT};">${addressHtml}</div>
       </div>
     </td></tr>
 
-    <tr><td style="padding:16px 28px 8px;">
+    <tr><td bgcolor="${CARD}" style="background:${CARD};padding:16px 28px 8px;">
       ${label("Contact")}
-      <div style="font-family:${BODY_FONT};font-size:15px;line-height:1.7;color:${INK};">
+      <div style="font-family:${BODY_FONT};font-size:15px;line-height:1.7;color:${TEXT};">
         ${esc(o.email)}${o.phone === "none" ? "" : `<br>${esc(o.phone)}`}
       </div>
     </td></tr>
 
-    <tr><td style="padding:16px 28px 8px;">
+    <tr><td bgcolor="${CARD}" style="background:${CARD};padding:16px 28px 8px;">
       ${label("Items")}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ${LINE};">${itemRows}</table>
     </td></tr>
 
-    <tr><td style="padding:24px 28px 32px;">
-      <a href="${esc(o.stripeUrl)}" style="display:inline-block;background:${ACCENT};color:${INK};font-family:${HEADING_FONT};font-size:14px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 26px;">View in Stripe</a>
+    <tr><td bgcolor="${CARD}" style="background:${CARD};padding:24px 28px 32px;">
+      <a href="${esc(o.stripeUrl)}" style="display:inline-block;background:${ACCENT};color:#0d0d0d;font-family:${HEADING_FONT};font-size:14px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 26px;">View in Stripe</a>
     </td></tr>
 
-    <tr><td style="background:${INK};padding:16px 28px;font-family:${BODY_FONT};font-size:12px;color:#9a9a9a;">
+    <tr><td bgcolor="${CARD}" style="background:${CARD};border-top:1px solid ${LINE};padding:16px 28px;font-family:${BODY_FONT};font-size:12px;color:${MUTED};">
       Sent automatically when an order is paid on xstaticfit.com
     </td></tr>
   </table>
