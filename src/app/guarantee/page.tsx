@@ -38,7 +38,7 @@ export default function GuaranteePage() {
           </p>
           <p className="text-sm leading-relaxed text-white/70">
             If you&rsquo;re not fully satisfied with your purchase for any reason, you can return
-            it within 15 days for a refund or exchange. That means no hassle &amp; especially no
+            it within 14 days for a refund or exchange. That means no hassle &amp; especially no
             stress.
           </p>
         </div>
