@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCart } from "@/store/cart";
 import { Product } from "@/lib/products";
+import { trackEvent } from "@/lib/meta/pixel";
 
 export default function AddToCart({ product }: { product: Product }) {
   const cart = useCart();
@@ -43,7 +44,7 @@ export default function AddToCart({ product }: { product: Product }) {
           </button>
         </div>
         <button
-          onClick={() =>
+          onClick={() => {
             cart.add(
               {
                 slug: product.slug,
@@ -52,8 +53,18 @@ export default function AddToCart({ product }: { product: Product }) {
                 image: product.image,
               },
               qty
-            )
-          }
+            );
+            trackEvent(
+              "AddToCart",
+              {
+                value: product.price * qty,
+                content_ids: [product.slug],
+                content_name: product.name,
+                contents: [{ id: product.slug, quantity: qty }],
+              },
+              [{ id: product.slug, quantity: qty }]
+            );
+          }}
           className="flex-1 rounded-[3px] bg-accent py-4 font-stencil text-xs uppercase tracking-[0.2em] text-ink transition hover:brightness-95"
         >
           Add to Cart

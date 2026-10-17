@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <Reveal className="py-14 text-center md:py-24">
         <Eyebrow>Legal</Eyebrow>
         <h1 className="mt-4 font-stencil text-4xl uppercase md:text-5xl">Privacy Policy</h1>
-        <p className="mt-2 text-sm text-white/50">Last updated: September 6, 2026</p>
+        <p className="mt-2 text-sm text-white/50">Last updated: October 17, 2026</p>
       </Reveal>
 
       <Reveal className="mx-auto max-w-3xl border-t border-white/10 px-6 py-12 md:px-10 md:py-20">
@@ -40,8 +40,9 @@ export default function PrivacyPage() {
                 not store your card number, CVC, or full payment details on our servers.
               </li>
               <li>
-                Usage data: pages visited, device and browser type, and general location, collected
-                automatically via standard web analytics.
+                Usage data: pages visited, device and browser type, IP address, and general
+                location, collected automatically through cookies and the Meta Pixel (see
+                &ldquo;Advertising &amp; Measurement&rdquo; below).
               </li>
             </ul>
           </section>
@@ -60,9 +61,52 @@ export default function PrivacyPage() {
             <h2 className="mb-3 font-stencil text-xl uppercase text-white">Sharing Your Information</h2>
             <p>
               We share information only with service providers who help us run our business,
-              like payment processing (Stripe), shipping carriers, and email delivery, and only
-              to the extent needed to provide those services. We do not sell your personal
-              information to third parties.
+              like payment processing (Stripe), shipping carriers, email delivery, and
+              advertising measurement (Meta, as described below), and only to the extent needed
+              to provide those services. We do not sell your personal information for money. Sending
+              data to Meta for ad measurement may count as &ldquo;sharing&rdquo; under some US state
+              privacy laws; you can opt out at any time as described below.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="mb-3 font-stencil text-xl uppercase text-white">Advertising &amp; Measurement</h2>
+            <p>
+              We use the Meta Pixel (a small piece of code from Meta Platforms, the company behind
+              Facebook and Instagram) and Meta&rsquo;s Conversions API to measure how our ads perform
+              and to show our ads to people who may be interested in them.
+            </p>
+            <ul className="mt-3 flex flex-col gap-2 list-disc pl-5">
+              <li>
+                From your browser, the Meta Pixel sends Meta the pages you view, the products you view
+                or add to your cart, when you start checkout, and when you complete a purchase, along
+                with your IP address, browser details, and Meta cookie identifiers.
+              </li>
+              <li>
+                From our server (Conversions API), we send Meta the same shopping events. For
+                purchases this includes the order value and items, plus your email address, phone
+                number, city, state, ZIP code, and country in hashed (scrambled) form, which Meta
+                uses to match the purchase to an ad.
+              </li>
+              <li>
+                Meta handles this data under its own privacy policy at{" "}
+                <a
+                  href="https://www.facebook.com/privacy/policy/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  facebook.com/privacy/policy
+                </a>
+                .
+              </li>
+            </ul>
+            <p className="mt-3">
+              You can say no. Click &ldquo;Decline&rdquo; in the cookie banner, or use the
+              &ldquo;Cookie Choices&rdquo; link at the bottom of any page to change your mind later.
+              When you decline, we do not load the Meta Pixel and we do not send your visits or
+              purchases to Meta. We also treat a Global Privacy Control signal from your browser as
+              a decline. You can also manage ad preferences in your Facebook or Instagram settings.
             </p>
           </section>
 
@@ -70,8 +114,10 @@ export default function PrivacyPage() {
             <h2 className="mb-3 font-stencil text-xl uppercase text-white">Cookies</h2>
             <p>
               We use cookies and similar technologies to keep your cart working between pages, remember
-              your preferences, and understand how visitors use our site. You can disable cookies in
-              your browser settings, though some features may not work correctly without them.
+              your preferences and your cookie choice, and understand how visitors use our site. If you
+              do not decline, the Meta Pixel sets Meta cookies (such as _fbp and _fbc) to recognize
+              your browser and connect visits to ads. You can disable cookies in your browser
+              settings, though some features may not work correctly without them.
             </p>
           </section>
 

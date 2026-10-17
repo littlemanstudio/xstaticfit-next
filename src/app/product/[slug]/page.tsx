@@ -7,6 +7,7 @@ import ProductCard from "@/components/ProductCard";
 import Eyebrow from "@/components/Eyebrow";
 import AddToCart from "./AddToCart";
 import ProductGallery from "./ProductGallery";
+import TrackViewContent from "@/components/TrackViewContent";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -78,6 +79,7 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
 
   return (
     <div className="bg-ink text-white">
+      <TrackViewContent slug={product.slug} name={product.name} price={product.price} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}

@@ -3,12 +3,50 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useCart } from "@/store/cart";
+import { PENDING_PURCHASE_KEY, trackPurchase } from "@/lib/meta/pixel";
+
+const FIRED_KEY = "xsf-purchases-tracked";
+
+/**
+ * Browser Purchase event. event_id is the Stripe Checkout Session id from the URL,
+ * the same id the Stripe webhook sends to the Conversions API, so Meta keeps one.
+ * Value comes from the checkout response saved just before the Stripe redirect.
+ * Fires at most once per session id, even if the page is reloaded.
+ */
+function firePurchaseOnce() {
+  try {
+    const sessionId = new URLSearchParams(window.location.search).get("session_id");
+    const raw = window.sessionStorage.getItem(PENDING_PURCHASE_KEY);
+    if (!sessionId || !raw) return;
+    const pending = JSON.parse(raw) as {
+      id?: string;
+      value?: number;
+      content_ids?: string[];
+      contents?: { id: string; quantity: number }[];
+      num_items?: number;
+    };
+    if (pending.id !== sessionId) return;
+    const fired: string[] = JSON.parse(window.localStorage.getItem(FIRED_KEY) ?? "[]");
+    if (fired.includes(sessionId)) return;
+    trackPurchase(sessionId, {
+      value: pending.value,
+      content_ids: pending.content_ids,
+      contents: pending.contents,
+      num_items: pending.num_items,
+    });
+    window.localStorage.setItem(FIRED_KEY, JSON.stringify([...fired, sessionId].slice(-20)));
+    window.sessionStorage.removeItem(PENDING_PURCHASE_KEY);
+  } catch {
+    // Tracking must never affect the confirmation page.
+  }
+}
 
 export default function CheckoutSuccessPage() {
   const clear = useCart((s) => s.clear);
 
   useEffect(() => {
     clear();
+    firePurchaseOnce();
   }, [clear]);
 
   return (
