@@ -16,6 +16,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
+// OWNER MUST CONFIRM: these reviews came over from the old site. Two of them share the
+// same text and one is signed "President, Corporate Store", so they may be template
+// placeholders. Showing reviews that are not from real customers is illegal under the
+// FTC fake reviews rule. They stay hidden until the owner confirms each one is a real
+// customer quote (then set SHOW_REVIEWS to true, and fix or remove the duplicate).
+const SHOW_REVIEWS = false;
+
 const REVIEWS = [
   {
     name: "Michael H",
@@ -92,23 +99,25 @@ export default function AboutPage() {
         </Link>
       </Reveal>
 
-      <section className="border-t border-white/10 py-14 md:py-24">
-        <div className="mx-auto max-w-[1400px] px-6 md:px-10">
-          <Reveal className="mb-8 flex flex-col items-center gap-3 text-center md:mb-12">
-            <Eyebrow>Reviews</Eyebrow>
-            <h2 className="font-stencil text-3xl uppercase">What people are saying</h2>
-          </Reveal>
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-            {REVIEWS.map((r, i) => (
-              <Reveal key={r.name + r.tag} delay={i * 0.08} className="border border-white/10 p-8">
-                <p className="text-sm leading-relaxed text-white/70">&ldquo;{r.text}&rdquo;</p>
-                <p className="mt-4 text-xs font-semibold uppercase tracking-wide">{r.name}</p>
-                <p className="text-xs text-white/50">{r.tag}</p>
-              </Reveal>
-            ))}
+      {SHOW_REVIEWS && (
+        <section className="border-t border-white/10 py-14 md:py-24">
+          <div className="mx-auto max-w-[1400px] px-6 md:px-10">
+            <Reveal className="mb-8 flex flex-col items-center gap-3 text-center md:mb-12">
+              <Eyebrow>Reviews</Eyebrow>
+              <h2 className="font-stencil text-3xl uppercase">What people are saying</h2>
+            </Reveal>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+              {REVIEWS.map((r, i) => (
+                <Reveal key={r.name + r.tag} delay={i * 0.08} className="border border-white/10 p-8">
+                  <p className="text-sm leading-relaxed text-white/70">&ldquo;{r.text}&rdquo;</p>
+                  <p className="mt-4 text-xs font-semibold uppercase tracking-wide">{r.name}</p>
+                  <p className="text-xs text-white/50">{r.tag}</p>
+                </Reveal>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="border-t border-white/10 py-12 text-center md:py-20">
         <Eyebrow>Xstatic Fit</Eyebrow>

@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { renderOrderHtml, type OrderEmail } from "@/lib/orderEmail";
+import { sendCapiEvent } from "@/lib/meta/capi";
 
 type Address = {
   line1?: string | null;
@@ -78,6 +79,42 @@ export async function POST(request: NextRequest) {
     const email = session.customer_details?.email ?? "none";
     const phone = session.customer_details?.phone ?? "none";
     const total = ((session.amount_total ?? 0) / 100).toFixed(2);
+
+    // Meta Conversions API Purchase. event_id = Stripe Checkout Session id, the same id the
+    // success page uses for the browser pixel Purchase, so Meta deduplicates the pair.
+    // Runs after the response and never throws, so a Meta outage cannot fail the webhook.
+    // Only sent when checkout stored meta_consent=granted (pixel configured, visitor did not decline).
+    const meta = session.metadata ?? {};
+    if (meta.meta_consent === "granted") {
+      const purchaseUser = {
+        email: session.customer_details?.email,
+        phone: session.customer_details?.phone,
+        city: addr?.city,
+        state: addr?.state,
+        zip: addr?.postal_code,
+        country: addr?.country,
+        clientIp: meta.meta_ip || null,
+        userAgent: meta.meta_ua || null,
+        fbp: meta.meta_fbp || null,
+        fbc: meta.meta_fbc || null,
+      };
+      const contentIds = (meta.content_ids ?? "").split(",").filter(Boolean);
+      after(() =>
+        sendCapiEvent({
+          eventName: "Purchase",
+          eventId: session.id,
+          eventSourceUrl: meta.meta_source_url || null,
+          user: purchaseUser,
+          custom: {
+            value: (session.amount_total ?? 0) / 100,
+            currency: (session.currency ?? "usd").toUpperCase(),
+            content_ids: contentIds,
+            num_items: Number(meta.num_items) || undefined,
+            order_id: session.id,
+          },
+        })
+      );
+    }
 
     const items = (session.line_items?.data ?? []).map((li) => ({
       qty: li.quantity ?? 1,

@@ -14,6 +14,9 @@ export type Product = {
   variants?: string[];
 };
 
+// OWNER MUST CONFIRM: compareAtPrice drives the "Sale!" badge and the struck-through
+// price. Only keep a compare-at price if the product was really sold at that price
+// for a meaningful period (FTC former-price rules). Prices are unchanged in this file.
 export const PRODUCTS: Product[] = [
   {
     slug: "xstatic-carbon-grips",

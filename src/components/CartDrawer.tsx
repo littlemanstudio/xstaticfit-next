@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useCart, useHasHydrated } from "@/store/cart";
+import { BUNDLE_PERCENT_OFF, cartTotals } from "@/lib/bundle";
+import { PENDING_PURCHASE_KEY, trackEvent } from "@/lib/meta/pixel";
+import { trackingAllowed } from "@/lib/meta/consent";
 
 export default function CartDrawer() {
   const cart = useCart();
@@ -12,18 +15,40 @@ export default function CartDrawer() {
 
   if (!hydrated || !cart.isOpen) return null;
 
+  const totals = cartTotals(cart.items);
+
   async function checkout() {
     setLoading(true);
     setError(null);
+    const lines = cart.items.map((i) => ({ id: i.slug, quantity: i.qty }));
+    trackEvent(
+      "InitiateCheckout",
+      {
+        value: totals.total,
+        content_ids: lines.map((l) => l.id),
+        contents: lines,
+        num_items: lines.reduce((s, l) => s + l.quantity, 0),
+      },
+      lines
+    );
     try {
+      const allowed = trackingAllowed();
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: cart.items }),
+        body: JSON.stringify({
+          items: cart.items.map((i) => ({ slug: i.slug, qty: i.qty })),
+          ...(allowed ? { tracking: { consent: "granted", pageUrl: window.location.href } } : {}),
+        }),
       });
       const data = await res.json();
       if (data.url) {
-        window.location.href = data.url;
+        if (allowed && data.purchase) {
+          try {
+            window.sessionStorage.setItem(PENDING_PURCHASE_KEY, JSON.stringify(data.purchase));
+          } catch {}
+        }
+        window.location.assign(data.url);
         return;
       }
       setError(data.error || "Checkout failed. Try again.");
@@ -99,8 +124,20 @@ export default function CartDrawer() {
         <div className="border-t border-white/10 px-6 py-6">
           <div className="mb-4 flex items-center justify-between text-sm uppercase tracking-wide">
             <span>Subtotal:</span>
-            <span className="font-semibold">$ {cart.subtotal().toFixed(2)} USD</span>
+            <span className="font-semibold">$ {totals.subtotal.toFixed(2)} USD</span>
           </div>
+          {totals.bundle && (
+            <>
+              <div className="-mt-2 mb-2 flex items-center justify-between text-sm uppercase tracking-wide text-accent">
+                <span>Bundle {BUNDLE_PERCENT_OFF}% off:</span>
+                <span className="font-semibold">− $ {totals.discount.toFixed(2)} USD</span>
+              </div>
+              <div className="mb-4 flex items-center justify-between text-sm uppercase tracking-wide">
+                <span>Total:</span>
+                <span className="font-semibold">$ {totals.total.toFixed(2)} USD</span>
+              </div>
+            </>
+          )}
           <button
             onClick={checkout}
             disabled={cart.items.length === 0 || loading}

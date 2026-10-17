@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Newsletter from "./Newsletter";
+import CookieChoicesLink from "./CookieChoicesLink";
 
 const LINKS = [
   { href: "/shop", label: "Shop" },
@@ -74,6 +75,7 @@ export default function Footer() {
           <Link href="/terms" className="hover:text-white/70">
             Terms &amp; Conditions
           </Link>
+          <CookieChoicesLink />
         </div>
       </div>
     </footer>
