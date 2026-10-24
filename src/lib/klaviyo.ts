@@ -54,6 +54,19 @@ async function call(path: string, body: unknown) {
 export async function subscribeEmail(opts: { email: string; language: Lang; source: string }) {
   const listId = process.env.KLAVIYO_LIST_ID;
   if (!listId) return { ok: false, detail: "KLAVIYO_LIST_ID not set" };
+
+  // The subscription endpoint does not accept custom properties, so save them on the profile first.
+  const profile = await call("/profile-import/", {
+    data: {
+      type: "profile",
+      attributes: {
+        email: opts.email,
+        properties: { language: opts.language, signup_source: opts.source },
+      },
+    },
+  });
+  if (!profile.ok) return profile;
+
   return call("/profile-subscription-bulk-create-jobs/", {
     data: {
       type: "profile-subscription-bulk-create-job",
@@ -64,7 +77,6 @@ export async function subscribeEmail(opts: { email: string; language: Lang; sour
               type: "profile",
               attributes: {
                 email: opts.email,
-                properties: { language: opts.language, signup_source: opts.source },
                 subscriptions: { email: { marketing: { consent: "SUBSCRIBED" } } },
               },
             },
