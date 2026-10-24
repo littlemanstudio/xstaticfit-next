@@ -36,7 +36,7 @@ export const PRODUCTS: Product[] = [
     ],
     category: "training",
     description:
-      "Grip with confidence. Built from carbon fiber-infused rubber, these ultra-durable grips protect your hands while giving you maximum control during pull-ups, lifts, and intense workouts. No slips, no rips, just pure performance with every rep.",
+      "Grip with confidence. Built from carbon fiber, these ultra-durable grips protect your hands while giving you maximum control during pull-ups, lifts, and intense workouts. No slips, no rips, just pure performance with every rep.",
     metaTitle: "Xstatic Carbon Grips for Pull-Ups & Lifts",
     metaDescription:
       "Carbon fiber-infused Xstatic Grips protect your hands through pull-ups, lifts, and max-intensity training sets. No slips, no rips, just grip you can trust.",
@@ -72,10 +72,10 @@ export const PRODUCTS: Product[] = [
     images: ["/images/pullupbar/3.jpg", "/images/pullupbar/1.jpg", "/images/pullupbar/2.jpg"],
     category: "training",
     description:
-      "Turn any room into a gym. Our adjustable pull-up bar extends to fit most door frames or wall spaces. This means no screws, no damage. Built with heavy-duty materials and tested to hold up to 330 lbs, it's the ultimate tool for full upper-body training at home, anytime. Measurements: 72-110cm",
+      "Turn any room into a gym. Our adjustable pull-up bar extends to fit most door frames or wall spaces. This means no screws, no damage. Built with heavy-duty materials and rated by the manufacturer to hold up to 330 lbs, it's the ultimate tool for full upper-body training at home, anytime. Measurements: 72-110cm",
     metaTitle: "Xstatic Adjustable Door Pull-Up Bar, 330 lbs",
     metaDescription:
-      "Heavy-duty adjustable door pull-up bar, no screws required. Holds up to 330 lbs and turns any doorway into a full upper-body training gym at home today.",
+      "Heavy-duty adjustable door pull-up bar, no screws required. Rated by the manufacturer for up to 330 lbs and turns any doorway into a full upper-body training gym at home today.",
     variantLabel: "Select Width",
     variants: ["72-110 cm"],
   },
