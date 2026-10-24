@@ -65,7 +65,7 @@ export async function subscribeEmail(opts: { email: string; language: Lang; sour
               attributes: {
                 email: opts.email,
                 properties: { language: opts.language, signup_source: opts.source },
-                subscriptions: { email: { marketing: { consented: true } } },
+                subscriptions: { email: { marketing: { consent: "SUBSCRIBED" } } },
               },
             },
           ],
