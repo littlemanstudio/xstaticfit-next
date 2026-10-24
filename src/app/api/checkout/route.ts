@@ -116,7 +116,9 @@ export async function POST(request: NextRequest) {
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items,
-    ...(discounts ? { discounts } : {}),
+    // Stripe does not allow a preset discount and a code box together. Bundle carts already get 10% off,
+    // every other cart shows the promo code box (the welcome email code).
+    ...(discounts ? { discounts } : { allow_promotion_codes: true }),
     ...(COLLECT_SALES_TAX ? { automatic_tax: { enabled: true } } : {}),
     shipping_address_collection: { allowed_countries: ["US", "PR", "CA"] },
     // Abandoned checkout flow: Stripe expires the session after 30 minutes (its minimum) and
