@@ -113,25 +113,34 @@ export async function POST(request: NextRequest) {
     metadata.meta_source_url = trim500(pageUrl);
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const params: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
     line_items,
-    // Stripe does not allow a preset discount and a code box together. Bundle carts already get 10% off,
-    // every other cart shows the promo code box (the welcome email code).
     ...(discounts ? { discounts } : { allow_promotion_codes: true }),
     ...(COLLECT_SALES_TAX ? { automatic_tax: { enabled: true } } : {}),
     shipping_address_collection: { allowed_countries: ["US", "PR", "CA"] },
     // Abandoned checkout flow: Stripe expires the session after 30 minutes (its minimum) and
     // sends checkout.session.expired with the email (if typed) and a recovery link.
-    // Promotions consent adds the opt-in checkbox on the Stripe page where Stripe requires it.
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
     after_expiration: { recovery: { enabled: true, allow_promotion_codes: false } },
-    consent_collection: { promotions: "auto" },
     payment_intent_data: { description: productNames.join(", ") },
     metadata,
     success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/checkout/cancel`,
-  });
+  };
+
+  // The marketing opt-in checkbox needs the Stripe account to accept the Checkout promotions terms
+  // (dashboard.stripe.com/settings/checkout). Until then Stripe rejects the whole session, so fall
+  // back to a checkout without the checkbox instead of blocking every purchase.
+  let session: Stripe.Checkout.Session;
+  try {
+    session = await stripe.checkout.sessions.create({ ...params, consent_collection: { promotions: "auto" } });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (!msg.includes("consent_collection")) throw err;
+    console.error("Checkout without promotions consent (accept the terms in Stripe settings):", msg);
+    session = await stripe.checkout.sessions.create(params);
+  }
 
   return NextResponse.json({
     url: session.url,
