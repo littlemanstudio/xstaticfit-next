@@ -2,6 +2,7 @@ import { NextRequest, NextResponse, after } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { renderOrderHtml, type OrderEmail } from "@/lib/orderEmail";
 import { sendCapiEvent } from "@/lib/meta/capi";
+import { languageFor, subscribeEmail, trackEvent } from "@/lib/klaviyo";
 
 type Address = {
   line1?: string | null;
@@ -121,6 +122,32 @@ export async function POST(request: NextRequest) {
       label: li.description ?? "Item",
     }));
 
+    // Klaviyo: tell the marketing flows this person bought (stops welcome and cart emails, starts
+    // post-purchase). Order and shipping emails still go out through Resend below.
+    // Runs after the response and never throws.
+    if (email !== "none") {
+      const lang = languageFor(addr?.country);
+      const consent = (session as unknown as { consent?: { promotions?: string | null } | null }).consent;
+      after(async () => {
+        if (consent?.promotions === "opt_in") {
+          await subscribeEmail({ email, language: lang, source: "checkout" });
+        }
+        await trackEvent({
+          email,
+          metric: "Placed Order",
+          language: lang,
+          uniqueId: session.id,
+          value: (session.amount_total ?? 0) / 100,
+          properties: {
+            order_id: session.id,
+            items: items.map((i) => ({ name: i.label, quantity: i.qty })),
+            product_names: items.map((i) => i.label),
+            country: addr?.country ?? null,
+          },
+        });
+      });
+    }
+
     const addressLines = addr
       ? [
           addr.line1,
@@ -190,6 +217,40 @@ export async function POST(request: NextRequest) {
         html: renderOrderHtml(order, "customer"),
         replyTo: OWNER_EMAIL,
         bcc: OWNER_EMAIL,
+      });
+    }
+  }
+
+  // Abandoned checkout: only people who typed their email and ticked the marketing opt-in
+  // on the Stripe page are sent to Klaviyo, with the link that reopens their cart.
+  if (event.type === "checkout.session.expired") {
+    const session = await stripe.checkout.sessions.retrieve(event.data.object.id, {
+      expand: ["line_items"],
+    });
+    const email = session.customer_details?.email ?? session.customer_email ?? null;
+    const consent = (session as unknown as { consent?: { promotions?: string | null } | null }).consent;
+    const recoveryUrl = session.after_expiration?.recovery?.url ?? null;
+    if (email && recoveryUrl && consent?.promotions === "opt_in") {
+      const items = (session.line_items?.data ?? []).map((li) => ({
+        name: li.description ?? "Item",
+        quantity: li.quantity ?? 1,
+      }));
+      const country = session.customer_details?.address?.country ?? null;
+      const lang = languageFor(country);
+      after(async () => {
+        await subscribeEmail({ email, language: lang, source: "checkout" });
+        await trackEvent({
+          email,
+          metric: "Checkout Abandoned",
+          language: lang,
+          uniqueId: session.id,
+          value: (session.amount_total ?? 0) / 100,
+          properties: {
+            cart_url: recoveryUrl,
+            items,
+            cart_items_html: items.map((i) => `${i.name} x ${i.quantity}`).join("<br>"),
+          },
+        });
       });
     }
   }

@@ -119,6 +119,12 @@ export async function POST(request: NextRequest) {
     ...(discounts ? { discounts } : {}),
     ...(COLLECT_SALES_TAX ? { automatic_tax: { enabled: true } } : {}),
     shipping_address_collection: { allowed_countries: ["US", "PR", "CA"] },
+    // Abandoned checkout flow: Stripe expires the session after 30 minutes (its minimum) and
+    // sends checkout.session.expired with the email (if typed) and a recovery link.
+    // Promotions consent adds the opt-in checkbox on the Stripe page where Stripe requires it.
+    expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+    after_expiration: { recovery: { enabled: true, allow_promotion_codes: false } },
+    consent_collection: { promotions: "auto" },
     payment_intent_data: { description: productNames.join(", ") },
     metadata,
     success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
