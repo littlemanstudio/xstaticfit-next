@@ -11,15 +11,28 @@ export default function Newsletter({
   cta?: string;
   variant?: "dark" | "light";
 }) {
-  const [status, setStatus] = useState<"idle" | "ok" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement)?.value;
-    if (email && email.includes("@")) {
+    const form = e.currentTarget;
+    const email = (form.elements.namedItem("email") as HTMLInputElement)?.value;
+    const company = (form.elements.namedItem("company") as HTMLInputElement)?.value;
+    if (!email || !email.includes("@")) {
+      setStatus("error");
+      return;
+    }
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, company, browserLang: navigator.language, source: "site" }),
+      });
+      if (!res.ok) throw new Error("subscribe failed");
       setStatus("ok");
-      e.currentTarget.reset();
-    } else {
+      form.reset();
+    } catch {
       setStatus("error");
     }
   }
@@ -30,6 +43,7 @@ export default function Newsletter({
     <div>
       {label && <p className={`mb-3 text-sm ${isLight ? "text-ink/70" : "text-white/70"}`}>{label}</p>}
       <form onSubmit={handleSubmit} className="flex gap-0">
+        <input name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
         <input
           name="email"
           type="email"
@@ -45,14 +59,17 @@ export default function Newsletter({
           type="submit"
           className="shrink-0 bg-accent px-5 text-xs font-stencil uppercase tracking-[0.15em] text-ink transition hover:brightness-95"
         >
-          {cta}
+          {status === "sending" ? "..." : cta}
         </button>
       </form>
+      <p className={`mt-2 text-[11px] leading-snug ${isLight ? "text-ink/50" : "text-white/40"}`}>
+        By joining you agree to get marketing emails from Xstatic Fit. Unsubscribe anytime.
+      </p>
       {status === "ok" && (
-        <p className="mt-2 text-xs text-accent">Thank you! Your submission has been received!</p>
+        <p className="mt-2 text-xs text-accent">You are in. Check your inbox for your welcome email.</p>
       )}
       {status === "error" && (
-        <p className="mt-2 text-xs text-red-400">Oops! Something went wrong. Check your email.</p>
+        <p className="mt-2 text-xs text-red-400">Something went wrong. Check your email and try again.</p>
       )}
     </div>
   );
