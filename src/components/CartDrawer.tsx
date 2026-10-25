@@ -40,6 +40,8 @@ export default function CartDrawer() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           items: cart.items.map((i) => ({ slug: i.slug, qty: i.qty })),
+          ...(email.trim() ? { email: email.trim(), marketingConsent: consent } : {}),
+          browserLang: typeof navigator !== "undefined" ? navigator.language : undefined,
           ...(allowed ? { tracking: { consent: "granted", pageUrl: window.location.href } } : {}),
         }),
       });
