@@ -128,8 +128,9 @@ export async function POST(request: NextRequest) {
     if (email !== "none") {
       const lang = languageFor(addr?.country);
       const consent = (session as unknown as { consent?: { promotions?: string | null } | null }).consent;
+      const optedIn = consent?.promotions === "opt_in" || session.metadata?.marketing_consent === "granted";
       after(async () => {
-        if (consent?.promotions === "opt_in") {
+        if (optedIn) {
           await subscribeEmail({ email, language: lang, source: "checkout" });
         }
         await trackEvent({
@@ -230,15 +231,16 @@ export async function POST(request: NextRequest) {
     const email = session.customer_details?.email ?? session.customer_email ?? null;
     const consent = (session as unknown as { consent?: { promotions?: string | null } | null }).consent;
     const recoveryUrl = session.after_expiration?.recovery?.url ?? null;
-    if (email && recoveryUrl && consent?.promotions === "opt_in") {
+    const optedIn = consent?.promotions === "opt_in" || session.metadata?.marketing_consent === "granted";
+    if (email && recoveryUrl && optedIn) {
       const items = (session.line_items?.data ?? []).map((li) => ({
         name: li.description ?? "Item",
         quantity: li.quantity ?? 1,
       }));
       const country = session.customer_details?.address?.country ?? null;
-      const lang = languageFor(country);
+      const lang = languageFor(country, session.metadata?.browser_lang);
       after(async () => {
-        await subscribeEmail({ email, language: lang, source: "checkout" });
+        await subscribeEmail({ email, language: lang, source: "cart" });
         await trackEvent({
           email,
           metric: "Checkout Abandoned",

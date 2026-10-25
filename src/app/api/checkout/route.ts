@@ -38,8 +38,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { items, tracking } = (await request.json()) as {
+  const { items, tracking, email, marketingConsent, browserLang } = (await request.json()) as {
     items: { slug: string; qty: number }[];
+    // Optional, typed in the cart. marketingConsent is true only if the visitor ticked the box.
+    email?: string;
+    marketingConsent?: boolean;
+    browserLang?: string;
     // Sent by the cart only when the visitor has not declined tracking.
     tracking?: { consent?: "granted"; pageUrl?: string };
   };
@@ -113,8 +117,17 @@ export async function POST(request: NextRequest) {
     metadata.meta_source_url = trim500(pageUrl);
   }
 
+  const cartEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(email ?? "").trim())
+    ? String(email).trim().toLowerCase().slice(0, 254)
+    : null;
+  if (cartEmail && marketingConsent === true) {
+    metadata.marketing_consent = "granted";
+    metadata.browser_lang = trim500(browserLang);
+  }
+
   const params: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
+    ...(cartEmail ? { customer_email: cartEmail } : {}),
     line_items,
     ...(discounts ? { discounts } : { allow_promotion_codes: true }),
     ...(COLLECT_SALES_TAX ? { automatic_tax: { enabled: true } } : {}),
@@ -129,18 +142,31 @@ export async function POST(request: NextRequest) {
     cancel_url: `${origin}/checkout/cancel`,
   };
 
-  // The marketing opt-in checkbox needs the Stripe account to accept the Checkout promotions terms
-  // (dashboard.stripe.com/settings/checkout). Until then Stripe rejects the whole session, so fall
-  // back to a checkout without the checkbox instead of blocking every purchase.
-  let session: Stripe.Checkout.Session;
-  try {
-    session = await stripe.checkout.sessions.create({ ...params, consent_collection: { promotions: "auto" } });
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    if (!msg.includes("consent_collection")) throw err;
-    console.error("Checkout without promotions consent (accept the terms in Stripe settings):", msg);
-    session = await stripe.checkout.sessions.create(params);
+  // Marketing extras (prefilled email, promotions checkbox) must never block a purchase. Try the full
+  // session first, then without the extras, so a Stripe rejection of any of them still lets people pay.
+  const { customer_email, ...baseParams } = params;
+  const attempts: Stripe.Checkout.SessionCreateParams[] = [
+    { ...params, consent_collection: { promotions: "auto" } },
+    params,
+    baseParams,
+  ];
+  let session: Stripe.Checkout.Session | null = null;
+  let lastError: unknown = null;
+  for (let i = 0; i < attempts.length; i++) {
+    // Skip identical attempts (no email typed means attempts 2 and 3 are the same).
+    if (i === 2 && !customer_email) break;
+    try {
+      session = await stripe.checkout.sessions.create(attempts[i]);
+      if (i > 0) console.error("Checkout created without marketing extras, attempt", i + 1, String(lastError));
+      break;
+    } catch (err) {
+      lastError = err;
+      const msg = err instanceof Error ? err.message : String(err);
+      // Only retry for errors about the optional parameters. Anything else is a real failure.
+      if (!/consent_collection|customer_email|customer/i.test(msg)) throw err;
+    }
   }
+  if (!session) throw lastError;
 
   return NextResponse.json({
     url: session.url,

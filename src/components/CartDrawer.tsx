@@ -12,6 +12,8 @@ export default function CartDrawer() {
   const hydrated = useHasHydrated();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
 
   if (!hydrated || !cart.isOpen) return null;
 
@@ -138,6 +140,30 @@ export default function CartDrawer() {
               </div>
             </>
           )}
+          <div className="mb-4">
+            <label htmlFor="cart-email" className="mb-1 block text-[11px] uppercase tracking-widest text-white/60">
+              Your email (optional)
+            </label>
+            <input
+              id="cart-email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="w-full border border-white/20 bg-transparent px-3 py-3 text-sm text-white outline-none placeholder:text-white/40"
+            />
+            <label className="mt-3 flex items-start gap-2 text-xs leading-snug text-white/60">
+              <input
+                type="checkbox"
+                checked={consent}
+                onChange={(e) => setConsent(e.target.checked)}
+                disabled={!email.trim()}
+                className="mt-0.5 h-4 w-4 shrink-0 accent-[#7ccf00]"
+              />
+              <span>Email me my cart and offers from Xstatic Fit. Unsubscribe anytime.</span>
+            </label>
+          </div>
           <button
             onClick={checkout}
             disabled={cart.items.length === 0 || loading}
