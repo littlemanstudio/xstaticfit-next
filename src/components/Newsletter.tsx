@@ -52,7 +52,7 @@ export default function Newsletter({
           className={`w-full border px-4 py-3 text-sm outline-none ${
             isLight
               ? "border-line bg-white text-ink placeholder:text-ink/40"
-              : "border-white/20 bg-transparent text-white placeholder:text-white/40"
+              : "border-white/20 bg-transparent text-white placeholder:text-white/60"
           }`}
         />
         <button
@@ -62,7 +62,7 @@ export default function Newsletter({
           {status === "sending" ? "..." : cta}
         </button>
       </form>
-      <p className={`mt-2 text-[11px] leading-snug ${isLight ? "text-ink/50" : "text-white/40"}`}>
+      <p className={`mt-2 text-[11px] leading-snug ${isLight ? "text-ink/50" : "text-white/60"}`}>
         By joining you agree to get marketing emails from Xstatic Fit. Unsubscribe anytime.
       </p>
       {status === "ok" && (

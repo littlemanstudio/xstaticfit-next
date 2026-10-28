@@ -31,6 +31,8 @@ export default function Hero() {
             alt="Xstatic Fit athlete training"
             fill
             priority
+            fetchPriority="high"
+            sizes="100vw"
             className="object-cover opacity-75"
           />
         </motion.div>
@@ -91,7 +93,7 @@ export default function Hero() {
         transition={{ duration: 1, delay: 1.2 }}
         className="pointer-events-none absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
       >
-        <span className="text-[10px] uppercase tracking-[0.3em] text-white/40">Scroll</span>
+        <span className="text-[10px] uppercase tracking-[0.3em] text-white/60">Scroll</span>
         <motion.span
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}

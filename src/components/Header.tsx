@@ -65,7 +65,7 @@ export default function Header() {
       <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 md:px-10">
         <div className="flex min-w-0 items-center gap-4">
           <Link href="/" className="flex shrink-0 items-center gap-2">
-            <Image src="/images/logo-white.png" alt="Xstatic Fit" width={28} height={28} className="h-6 w-6 sm:h-8 sm:w-8" />
+            <Image src="/images/logo-white.png" alt="" aria-hidden width={28} height={28} className="h-6 w-6 sm:h-8 sm:w-8" />
             <span className="whitespace-nowrap font-stencil text-sm tracking-[0.1em] sm:text-lg">
               XSTATIC FIT
             </span>
@@ -107,7 +107,7 @@ export default function Header() {
             <button
               onClick={cart.open}
               className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[4px]"
-              aria-label="Open cart"
+              aria-label="Cart, open"
             >
               <svg
                 width="18"
@@ -149,7 +149,7 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
     >
       <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-4 py-3 sm:px-6 sm:py-4 md:px-10">
         <div className="flex items-center gap-2">
-          <Image src="/images/logo-white.png" alt="Xstatic Fit" width={24} height={24} className="h-6 w-6" />
+          <Image src="/images/logo-white.png" alt="" aria-hidden width={24} height={24} className="h-6 w-6" />
           <span className="font-stencil text-sm tracking-[0.1em] sm:text-lg">XSTATIC FIT</span>
         </div>
         <motion.button

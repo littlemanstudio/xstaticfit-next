@@ -66,7 +66,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 px-6 py-6 text-xs text-white/40 sm:flex-row md:px-10">
+      <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 px-6 py-6 text-xs text-white/60 sm:flex-row md:px-10">
         <span>Copyright © All Rights Reserved</span>
         <div className="flex items-center gap-4">
           <Link href="/privacy" className="hover:text-white/70">

@@ -1,4 +1,4 @@
-export const SITE_URL = "https://xstaticfit.com";
+export const SITE_URL = "https://www.xstaticfit.com";
 export const SITE_NAME = "Xstatic Fit";
 
 export function absoluteUrl(path: string) {

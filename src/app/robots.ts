@@ -3,10 +3,8 @@ import { SITE_URL } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      { userAgent: "*", allow: "/" },
-      { userAgent: "*", disallow: ["/checkout/success", "/checkout/cancel"] },
-    ],
+    // One group: crawlers that find several "User-agent: *" groups may only honor the first.
+    rules: [{ userAgent: "*", allow: "/", disallow: ["/api/", "/checkout/success", "/checkout/cancel"] }],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
