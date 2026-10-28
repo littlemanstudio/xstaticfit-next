@@ -48,7 +48,7 @@ export default function ShopPage() {
               key={c}
               onClick={() => setActive(c)}
               className={`text-xs uppercase tracking-[0.2em] transition ${
-                active === c ? "text-white" : "text-white/40 hover:text-white/70"
+                active === c ? "text-white" : "text-white/60 hover:text-white/70"
               }`}
             >
               {c}

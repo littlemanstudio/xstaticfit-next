@@ -119,7 +119,7 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
           <div className="mt-3 flex items-center gap-3 text-lg">
             <span className="font-semibold">$ {product.price.toFixed(2)} USD</span>
             {product.compareAtPrice && (
-              <span className="text-white/40 line-through">
+              <span className="text-white/60 line-through">
                 $ {product.compareAtPrice.toFixed(2)} USD
               </span>
             )}

@@ -4,6 +4,7 @@ import { getStripe } from "@/lib/stripe";
 import { getProduct } from "@/lib/products";
 import { BUNDLE_COUPON_ID, BUNDLE_PERCENT_OFF, cartTotals } from "@/lib/bundle";
 import { COLLECT_SALES_TAX } from "@/lib/tax";
+import { rateLimited } from "@/lib/rateLimit";
 import { capiConfigured, clientIpFrom, fbcFrom } from "@/lib/meta/capi";
 
 /** Reuses one Stripe coupon for the "buy all 3, save 10%" bundle, creating it the first time. */
@@ -30,6 +31,9 @@ function trim500(v: string | null | undefined) {
 }
 
 export async function POST(request: NextRequest) {
+  if (rateLimited(request, "checkout", 20, 60_000)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
   const stripe = getStripe();
   if (!stripe) {
     return NextResponse.json(
@@ -38,7 +42,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { items, tracking, email, marketingConsent, browserLang } = (await request.json()) as {
+  const parsed = await request.json().catch(() => null);
+  if (!parsed || typeof parsed !== "object") {
+    return NextResponse.json({ error: "Bad request" }, { status: 400 });
+  }
+  const { items, tracking, email, marketingConsent, browserLang } = parsed as {
     items: { slug: string; qty: number }[];
     // Optional, typed in the cart. marketingConsent is true only if the visitor ticked the box.
     email?: string;
@@ -48,7 +56,7 @@ export async function POST(request: NextRequest) {
     tracking?: { consent?: "granted"; pageUrl?: string };
   };
 
-  if (!items?.length) {
+  if (!Array.isArray(items) || !items.length || items.length > 20) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
   }
 
@@ -60,11 +68,11 @@ export async function POST(request: NextRequest) {
   const lines: { slug: string; qty: number }[] = [];
 
   for (const item of items) {
-    const product = getProduct(item.slug);
+    const product = getProduct(String(item?.slug ?? ""));
     if (!product) {
-      return NextResponse.json({ error: `Unknown product: ${item.slug}` }, { status: 400 });
+      return NextResponse.json({ error: "Unknown product" }, { status: 400 });
     }
-    const qty = Math.max(1, Math.floor(Number(item.qty) || 1));
+    const qty = Math.min(99, Math.max(1, Math.floor(Number(item.qty) || 1)));
     lines.push({ slug: product.slug, qty });
     line_items.push({
       quantity: qty,

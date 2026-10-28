@@ -40,7 +40,7 @@ function MetaPixelInner() {
         <Script
           id="meta-pixel"
           src="https://connect.facebook.net/en_US/fbevents.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       )}
       {consent === null && <ConsentBanner />}

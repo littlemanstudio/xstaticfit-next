@@ -55,11 +55,14 @@ export async function POST(request: NextRequest) {
   }
 
   const signature = request.headers.get("stripe-signature");
+  if (!signature) {
+    return NextResponse.json({ error: "Missing signature" }, { status: 400 });
+  }
   const body = await request.text();
 
   let event;
   try {
-    event = stripe.webhooks.constructEvent(body, signature!, webhookSecret);
+    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }

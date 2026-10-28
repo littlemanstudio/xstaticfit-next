@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse, after } from "next/server";
+import { rateLimited } from "@/lib/rateLimit";
 import { RELAY_EVENTS, type RelayEventName } from "@/lib/meta/config";
 import { capiConfigured, clientIpFrom, fbcFrom, sendCapiEvent } from "@/lib/meta/capi";
 import { getProduct } from "@/lib/products";
@@ -19,6 +20,9 @@ type Body = {
 
 export async function POST(request: NextRequest) {
   if (!capiConfigured()) return NextResponse.json({ ok: true, skipped: true });
+  if (rateLimited(request, "meta-event", 60, 60_000)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
 
   let body: Body;
   try {

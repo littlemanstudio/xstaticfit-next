@@ -153,7 +153,7 @@ export default function CartDrawer() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full border border-white/20 bg-transparent px-3 py-3 text-sm text-white outline-none placeholder:text-white/40"
+              className="w-full border border-white/20 bg-transparent px-3 py-3 text-sm text-white outline-none placeholder:text-white/60"
             />
             <label className="mt-3 flex items-start gap-2 text-xs leading-snug text-white/60">
               <input

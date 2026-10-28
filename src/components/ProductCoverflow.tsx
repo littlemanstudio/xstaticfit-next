@@ -210,19 +210,24 @@ export default function ProductCoverflow({
           <ChevronRightIcon />
         </button>
 
-        <div className="z-30 flex items-center justify-center gap-2">
+        <div className="z-30 flex items-center justify-center">
           {products.map((p, idx) => (
             <button
               key={p.slug}
               onClick={() => setCurrentIndex(idx)}
               aria-label={`Go to ${p.name}`}
-              className="h-2 rounded-full transition-all duration-300"
-              style={{
-                width: idx === currentIndex ? 28 : 8,
-                backgroundColor: idx === currentIndex ? "#7ccf00" : "rgba(255,255,255,0.25)",
-                boxShadow: idx === currentIndex ? "0 0 10px rgba(124,207,0,0.7)" : "none",
-              }}
-            />
+              className="group flex h-6 items-center justify-center px-2"
+            >
+              <span
+                aria-hidden
+                className="block h-2 rounded-full transition-all duration-300"
+                style={{
+                  width: idx === currentIndex ? 28 : 8,
+                  backgroundColor: idx === currentIndex ? "#7ccf00" : "rgba(255,255,255,0.25)",
+                  boxShadow: idx === currentIndex ? "0 0 10px rgba(124,207,0,0.7)" : "none",
+                }}
+              />
+            </button>
           ))}
         </div>
       </div>

@@ -64,7 +64,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="mt-1 flex items-center gap-2 text-sm">
           <span className="font-semibold text-white">$ {product.price.toFixed(2)} USD</span>
           {product.compareAtPrice && (
-            <span className="text-white/40 line-through">$ {product.compareAtPrice.toFixed(2)} USD</span>
+            <span className="text-white/60 line-through">$ {product.compareAtPrice.toFixed(2)} USD</span>
           )}
         </div>
       </Link>
