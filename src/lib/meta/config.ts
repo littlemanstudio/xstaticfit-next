@@ -16,7 +16,7 @@ export const META_ENABLED = /^\d{5,20}$/.test(META_PIXEL_ID);
  *  - "opt-in": nothing fires until the visitor clicks Accept.
  * Switch to "opt-in" if the owner or a lawyer prefers the stricter model.
  */
-export const META_CONSENT_MODE: "opt-out" | "opt-in" = "opt-out";
+export const META_CONSENT_MODE: "opt-out" | "opt-in" = "opt-in";
 
 export const META_CURRENCY = "USD";
 
