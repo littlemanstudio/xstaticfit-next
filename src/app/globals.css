@@ -20,6 +20,37 @@
   --color-line: var(--color-line);
   --font-stencil: var(--font-stencil);
   --font-cabin: var(--font-cabin);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ring: var(--ring);
+  --color-border: var(--border);
+}
+
+/* Design tokens for the 21st.dev (shadcn) pieces used by /admin only. */
+.admin-shell {
+  --card: #141414;
+  --card-foreground: #ffffff;
+  --muted: rgba(255, 255, 255, 0.06);
+  --muted-foreground: rgba(255, 255, 255, 0.55);
+  --primary: #7ccf00;
+  --primary-foreground: #0d0d0d;
+  --secondary: rgba(255, 255, 255, 0.1);
+  --secondary-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --ring: #7ccf00;
+  --border: rgba(255, 255, 255, 0.1);
+}
+.admin-shell * {
+  border-color: var(--border);
 }
 
 body {

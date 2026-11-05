@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
 import { stencil, cabin } from "./fonts";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import CartDrawer from "@/components/CartDrawer";
-import TopBanner from "@/components/TopBanner";
-import SmoothScroll from "@/components/SmoothScroll";
-import MetaPixel from "@/components/MetaPixel";
+import SiteChrome from "@/components/SiteChrome";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const HOME_TITLE = "Xstatic Fit | Home Training Gear Built for Warriors";
@@ -60,13 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        <SmoothScroll />
-        <TopBanner />
-        <Header />
-        <CartDrawer />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <MetaPixel />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );
