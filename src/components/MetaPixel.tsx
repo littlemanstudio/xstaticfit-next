@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { META_CONSENT_MODE, META_ENABLED } from "@/lib/meta/config";
 import { setConsent, useConsent } from "@/lib/meta/consent";
+import { useLang } from "@/lib/lang";
 import { grantPixelConsent, revokePixelConsent, trackPageView } from "@/lib/meta/pixel";
 
 /**
@@ -49,6 +50,7 @@ function MetaPixelInner() {
 }
 
 function ConsentBanner() {
+  const es = useLang() === "es";
   return (
     <div
       role="region"
@@ -57,10 +59,11 @@ function ConsentBanner() {
     >
       <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 md:px-10">
         <p className="text-xs leading-relaxed text-white/70 sm:max-w-2xl">
-          We use cookies, including the Meta Pixel, to measure our ads and improve the site. See
-          our{" "}
+          {es
+            ? "Usamos cookies, incluido el Meta Pixel, para medir nuestros anuncios y mejorar el sitio. Mira nuestra "
+            : "We use cookies, including the Meta Pixel, to measure our ads and improve the site. See our "}
           <Link href="/privacy" className="underline hover:text-white">
-            Privacy Policy
+            {es ? "Política de privacidad" : "Privacy Policy"}
           </Link>
           .
         </p>
@@ -72,7 +75,7 @@ function ConsentBanner() {
             }}
             className="min-h-11 flex-1 rounded-[3px] border border-white/30 px-6 font-stencil text-xs uppercase tracking-[0.2em] transition hover:border-white sm:flex-none"
           >
-            Decline
+            {es ? "Rechazar" : "Decline"}
           </button>
           <button
             onClick={() => {
@@ -81,7 +84,7 @@ function ConsentBanner() {
             }}
             className="min-h-11 flex-1 rounded-[3px] bg-accent px-6 font-stencil text-xs uppercase tracking-[0.2em] text-ink transition hover:brightness-95 sm:flex-none"
           >
-            Accept
+            {es ? "Aceptar" : "Accept"}
           </button>
         </div>
       </div>

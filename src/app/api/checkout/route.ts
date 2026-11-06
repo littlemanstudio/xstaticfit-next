@@ -46,8 +46,11 @@ export async function POST(request: NextRequest) {
   if (!parsed || typeof parsed !== "object") {
     return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }
-  const { items, tracking, email, marketingConsent, browserLang } = parsed as {
+  const { items, tracking, email, marketingConsent, browserLang, lang, attribution } = parsed as {
     items: { slug: string; qty: number }[];
+    // "es" opens Stripe Checkout in Spanish. attribution holds the ad's UTM tags (see lib/attribution.ts).
+    lang?: string;
+    attribution?: Record<string, unknown>;
     // Optional, typed in the cart. marketingConsent is true only if the visitor ticked the box.
     email?: string;
     marketingConsent?: boolean;
@@ -125,6 +128,16 @@ export async function POST(request: NextRequest) {
     metadata.meta_source_url = trim500(pageUrl);
   }
 
+  // Which ad sent this buyer. Whitelisted keys only, short strings, so it can never bloat or poison the metadata.
+  if (attribution && typeof attribution === "object") {
+    for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "landing"]) {
+      const v = attribution[key];
+      if (typeof v === "string" && v.trim()) metadata[`attr_${key}`] = v.replace(/[^\w\s.:+|/@-]/g, "").trim().slice(0, 100);
+    }
+  }
+  const spanish = lang === "es";
+  if (spanish) metadata.lang = "es";
+
   const cartEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(email ?? "").trim())
     ? String(email).trim().toLowerCase().slice(0, 254)
     : null;
@@ -135,6 +148,7 @@ export async function POST(request: NextRequest) {
 
   const params: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
+    ...(spanish ? { locale: "es-419" as const } : {}),
     ...(cartEmail ? { customer_email: cartEmail } : {}),
     line_items,
     ...(discounts ? { discounts } : { allow_promotion_codes: true }),

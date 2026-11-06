@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useCart } from "@/store/cart";
+import { useLang } from "@/lib/lang";
 import { PENDING_PURCHASE_KEY, trackPurchase } from "@/lib/meta/pixel";
 
 const FIRED_KEY = "xsf-purchases-tracked";
@@ -41,8 +42,38 @@ function firePurchaseOnce() {
   }
 }
 
+const COPY = {
+  en: {
+    eyebrow: "Order Confirmed",
+    title: "You\u2019re a warrior",
+    body: "Thank you for your order. A confirmation has been sent to your email.",
+    stepsTitle: "What happens next",
+    steps: [
+      "Your order ships within 24 to 48 hours (not on weekends).",
+      "We email you the tracking number when it ships.",
+      "It arrives in 3 to 5 business days.",
+    ],
+    follow: "Follow the training on Instagram",
+    shop: "Continue Shopping",
+  },
+  es: {
+    eyebrow: "Pedido confirmado",
+    title: "Ya eres un guerrero",
+    body: "Gracias por tu pedido. Te enviamos la confirmación a tu email.",
+    stepsTitle: "Lo que sigue",
+    steps: [
+      "Tu pedido sale en 24 a 48 horas (no enviamos en fines de semana).",
+      "Te escribimos el número de rastreo cuando salga.",
+      "Llega en 3 a 5 días hábiles.",
+    ],
+    follow: "Sigue el entrenamiento en Instagram",
+    shop: "Seguir comprando",
+  },
+} as const;
+
 export default function CheckoutSuccessPage() {
   const clear = useCart((s) => s.clear);
+  const t = COPY[useLang()];
 
   useEffect(() => {
     clear();
@@ -50,18 +81,38 @@ export default function CheckoutSuccessPage() {
   }, [clear]);
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-xl flex-col items-center justify-center bg-ink px-6 py-32 text-center text-white">
-      <span className="text-xs uppercase tracking-[0.3em] text-accent">Order Confirmed</span>
-      <h1 className="mt-4 font-stencil text-4xl uppercase">You&rsquo;re a warrior</h1>
-      <p className="mt-4 text-sm text-white/70">
-        Thank you for your order. A confirmation has been sent to your email, and we&rsquo;ll ship
-        within 24-48 hours.
-      </p>
+    <div className="mx-auto flex min-h-[70vh] max-w-xl flex-col items-center justify-center bg-ink px-6 py-24 text-center text-white">
+      <span className="text-xs uppercase tracking-[0.3em] text-accent">{t.eyebrow}</span>
+      <h1 className="mt-4 font-stencil text-4xl uppercase">{t.title}</h1>
+      <p className="mt-4 text-sm text-white/70">{t.body}</p>
+
+      <div className="mt-8 w-full border border-white/10 p-5 text-left">
+        <p className="font-stencil text-xs uppercase tracking-[0.2em] text-white/60">{t.stepsTitle}</p>
+        <ol className="mt-3 flex flex-col gap-3 text-sm text-white/80">
+          {t.steps.map((step, i) => (
+            <li key={step} className="flex gap-3">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-ink">
+                {i + 1}
+              </span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <a
+        href="https://instagram.com/xstaticfit"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-6 inline-flex min-h-11 items-center text-sm text-accent underline underline-offset-4"
+      >
+        {t.follow} @xstaticfit
+      </a>
       <Link
         href="/shop"
-        className="mt-10 inline-block rounded-[3px] bg-accent px-8 py-4 font-stencil text-xs uppercase tracking-[0.2em] text-ink transition hover:brightness-95"
+        className="mt-6 inline-block rounded-[3px] bg-accent px-8 py-4 font-stencil text-xs uppercase tracking-[0.2em] text-ink transition hover:brightness-95"
       >
-        Continue Shopping
+        {t.shop}
       </Link>
     </div>
   );
