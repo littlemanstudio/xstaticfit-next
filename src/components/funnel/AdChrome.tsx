@@ -41,9 +41,9 @@ export default function AdChrome({ children }: { children: React.ReactNode }) {
             href={otherHref}
             hrefLang={otherLang}
             aria-label={lang === "es" ? "Switch to English" : "Cambiar a español"}
-            className="flex min-h-11 min-w-11 items-center justify-center text-xs font-semibold uppercase tracking-[3px] text-white/70 hover:text-white"
+            className="flex min-h-11 min-w-11 items-center justify-center px-2 text-xs font-semibold uppercase tracking-[2px] text-white/70 hover:text-white"
           >
-            {otherLang}
+            {otherLang === "es" ? "Español" : "English"}
           </Link>
           {count > 0 && (
             <button
