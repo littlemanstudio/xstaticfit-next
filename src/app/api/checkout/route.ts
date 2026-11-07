@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
     after_expiration: { recovery: { enabled: true, allow_promotion_codes: false } },
     payment_intent_data: { description: productNames.join(", ") },
     metadata,
-    success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+    success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}${spanish ? "&lang=es" : ""}`,
     cancel_url: `${origin}/checkout/cancel`,
   };
 

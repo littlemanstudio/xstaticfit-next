@@ -4,9 +4,9 @@ import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import Reveal from "@/components/Reveal";
 
-const TITLE = "Our Story: Founded by a 14-Year-Old Founder";
+const TITLE = "Our Story: Founded by an 18-Year-Old Founder";
 const DESCRIPTION =
-  "Founded by 14-year-old Puerto Rico entrepreneur Allan Rosario, Xstatic Fit builds home training gear to help you break barriers and become your best self today.";
+  "Founded by 18-year-old Puerto Rico entrepreneur Allan Rosario, Xstatic Fit builds home training gear to help you break barriers and become your best self today.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -42,7 +42,7 @@ export default function AboutPage() {
         </h2>
         <div className="mx-auto mt-8 flex max-w-2xl flex-col gap-4 text-left text-sm leading-relaxed text-white/70">
           <p>
-            My name is Allan Rosario. I&rsquo;m a 14 year old entrepreneur from Puerto Rico. I
+            My name is Allan Rosario. I&rsquo;m an 18 year old entrepreneur from Puerto Rico. I
             started working out with my dad when I was 7 years old. I&rsquo;ve always been
             looking for ways to create a business where I can motivate and inspire people the
             way I was inspired through fitness. For me, fitness is something that changes lives,

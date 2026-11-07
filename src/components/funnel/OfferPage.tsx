@@ -61,7 +61,7 @@ export default function OfferPage({ offerId, lang }: { offerId: OfferId; lang: L
 
           <BuyBox />
 
-          <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-white/70">
+          <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-white/80">
             {ui.trust.map((t) => (
               <li key={t} className="flex items-center gap-2">
                 <Tick />
@@ -69,6 +69,12 @@ export default function OfferPage({ offerId, lang }: { offerId: OfferId; lang: L
               </li>
             ))}
           </ul>
+          <p className="mt-4 text-sm text-white/70">
+            {ui.ask}{" "}
+            <a href="mailto:contact@xstaticfit.com" className="text-accent underline underline-offset-4">
+              contact@xstaticfit.com
+            </a>
+          </p>
         </div>
       </section>
 
@@ -119,7 +125,7 @@ export default function OfferPage({ offerId, lang }: { offerId: OfferId; lang: L
               <details key={f.q} className="group py-4">
                 <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold">
                   {f.q}
-                  <span aria-hidden className="text-accent transition group-open:rotate-45">+</span>
+                  <span aria-hidden className="text-2xl leading-none text-accent transition group-open:rotate-45">+</span>
                 </summary>
                 <p className="pb-1 pt-2 text-sm leading-relaxed text-white/70">{f.a}</p>
               </details>

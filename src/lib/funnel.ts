@@ -93,7 +93,7 @@ export const OFFERS: Record<OfferId, Offer> = {
         bullets: [
           "Fibra de carbono resistente, hecha para durar",
           "Protegen tus manos en pull-ups y levantamientos",
-          "Sin resbalar y sin romperse, rep tras rep",
+          "Talla única: un solo tamaño le sirve a todos",
         ],
         includedTitle: "Completa tu entrenamiento",
       },
@@ -105,7 +105,7 @@ export const OFFERS: Record<OfferId, Offer> = {
         bullets: [
           "Durable carbon fiber, built to last",
           "Protect your hands on pull-ups and lifts",
-          "No slips, no rips, rep after rep",
+          "One size fits all hands",
         ],
         includedTitle: "Complete your training",
       },
@@ -159,8 +159,8 @@ export const PRODUCT_COPY: Record<string, Record<Lang, { name: string; line: str
     en: { name: "Door pull-up bar", line: "Adjustable 72 to 110 cm, no screws" },
   },
   [GRIPS]: {
-    es: { name: "Grips fibra de carbono", line: "Protegen tus manos y dan control" },
-    en: { name: "Carbon fiber grips", line: "Protect your hands, give you control" },
+    es: { name: "Grips fibra de carbono", line: "Talla única, protegen tus manos" },
+    en: { name: "Carbon fiber grips", line: "One size, protect your hands" },
   },
   [ROPE]: {
     es: { name: "Cuerda con pesas", line: "Largo ajustable, pesas incluidas" },
@@ -195,6 +195,7 @@ export const UI: Record<
     finalTitle: string;
     finalSub: string;
     secure: string;
+    ask: string;
     footer: { label: string; href: string }[];
     homeAria: string;
     cartAria: string;
@@ -231,12 +232,17 @@ export const UI: Record<
       },
       {
         q: "¿Puedo devolverlo?",
-        a: "Sí. Aceptamos cambios o reembolsos dentro de 14 días después de la entrega, con el producto en condición de venta y su empaque. El envío original no se reembolsa.",
+        a: "Sí. Aceptamos cambios o reembolsos dentro de 14 días después de la entrega, con el producto en condición de venta y su empaque. El envío de tu compra va incluido. Si devuelves, el costo del envío original no se reembolsa y el envío de la devolución lo pagas tú.",
       },
       {
         q: "¿La barra daña la puerta?",
-        a: "Se ajusta al marco sin tornillos ni taladro. Sirve para marcos de 72 a 110 cm de ancho, así que mide el tuyo antes de comprar.",
+        a: "No usa tornillos ni taladro, así que no hace huecos en la puerta ni en el marco. Sirve para marcos de 72 a 110 cm de ancho, así que mide el tuyo antes de comprar.",
       },
+      {
+        q: "¿Cómo mido mi puerta?",
+        a: "Mide el ancho del marco de la puerta, de lado a lado. Tiene que estar entre 72 y 110 cm para que la barra se ajuste.",
+      },
+      { q: "¿Qué talla son los grips?", a: "Son talla única: un solo tamaño le sirve a todos." },
       { q: "¿Cuánto peso aguanta la barra?", a: "El fabricante la califica hasta 330 libras." },
       { q: "¿A dónde envían?", a: "A Puerto Rico, Estados Unidos y Canadá." },
       {
@@ -247,6 +253,7 @@ export const UI: Record<
     finalTitle: "Empieza a entrenar esta semana",
     finalSub: "Pides hoy, sale en 24 a 48 horas y llega en 3 a 5 días hábiles.",
     secure: "Pago seguro con Stripe",
+    ask: "¿Preguntas antes de comprar? Escríbenos a",
     footer: [
       { label: "Envíos y devoluciones", href: "/shipping" },
       { label: "Privacidad", href: "/privacy" },
@@ -287,12 +294,17 @@ export const UI: Record<
       },
       {
         q: "Can I return it?",
-        a: "Yes. We accept exchanges or refunds within 14 days after delivery, with the item in sellable condition and its packaging. The original delivery charge is not refunded.",
+        a: "Yes. We accept exchanges or refunds within 14 days after delivery, with the item in sellable condition and its packaging. Shipping on your order is included. If you return an item, the original delivery charge is not refunded and you pay the return shipping.",
       },
       {
         q: "Will the bar damage my door?",
-        a: "It adjusts to the frame with no screws and no drilling. It fits frames 72 to 110 cm wide, so measure yours before you order.",
+        a: "It uses no screws and no drilling, so it does not put holes in your door or frame. It fits frames 72 to 110 cm wide, so measure yours before you order.",
       },
+      {
+        q: "How do I measure my door?",
+        a: "Measure the width of the door frame from side to side. It needs to be between 72 and 110 cm for the bar to fit.",
+      },
+      { q: "What size are the grips?", a: "One size fits all hands." },
       { q: "How much weight does the bar hold?", a: "The manufacturer rates it up to 330 lbs." },
       { q: "Where do you ship?", a: "To Puerto Rico, the United States and Canada." },
       {
@@ -303,6 +315,7 @@ export const UI: Record<
     finalTitle: "Start training this week",
     finalSub: "Order today, it ships in 24 to 48 hours and arrives in 3 to 5 business days.",
     secure: "Secure checkout with Stripe",
+    ask: "Questions before you buy? Email us at",
     footer: [
       { label: "Shipping & returns", href: "/shipping" },
       { label: "Privacy", href: "/privacy" },

@@ -90,6 +90,11 @@ export function BuyProvider({ lang, offer, children }: { lang: Lang; offer: Offe
     }
   }, [lang, lines, loading, totals.subtotal]);
 
+  // The error sits under the main button. If the buyer tapped the sticky bar, bring it into view.
+  useEffect(() => {
+    if (error) document.getElementById("buy-error")?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, [error]);
+
   return <Ctx.Provider value={{ lang, offer, selected, toggle, totals, loading, error, buy }}>{children}</Ctx.Provider>;
 }
 
@@ -132,11 +137,11 @@ export function BuyBox() {
                 <input type="checkbox" checked={on} onChange={() => toggle(p.slug)} className="sr-only" />
                 <Check on={on} />
                 <span className="relative h-12 w-12 shrink-0 overflow-hidden bg-white">
-                  <Image src={p.image} alt="" fill sizes="48px" className="object-cover" />
+                  <Image src={p.image} alt="" fill sizes="48px" loading="eager" className="object-cover" />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-sm font-semibold leading-tight">{copy.name}</span>
-                  <span className="block text-xs leading-snug text-white/60">{copy.line}</span>
+                  <span className="block text-[13px] leading-snug text-white/70">{copy.line}</span>
                 </span>
                 <span className="shrink-0 text-sm font-semibold">{money(p.price)}</span>
               </label>
@@ -145,11 +150,11 @@ export function BuyBox() {
         })}
       </ul>
 
-      <p className={`mt-3 text-xs ${totals.bundle ? "text-accent" : "text-white/70"}`} aria-live="polite">
+      <p className={`mt-3 text-sm ${totals.bundle ? "text-accent" : "text-white/80"}`} aria-live="polite">
         {totals.bundle ? ui.bundleDone : ui.bundleHint(missing)}
       </p>
 
-      <dl className="mt-3 flex flex-col gap-1 border-t border-white/10 pt-3 text-sm">
+      <dl className="mt-3 flex min-h-[104px] flex-col justify-end gap-1 border-t border-white/10 pt-3 text-sm">
         {totals.bundle && (
           <>
             <div className="flex justify-between text-white/70">
@@ -178,7 +183,7 @@ export function BuyBox() {
         {loading ? ui.buying : `${ui.buy} · ${money(totals.total)}`}
       </button>
       {error && (
-        <p role="alert" className="mt-3 text-center text-xs text-red-400">
+        <p id="buy-error" role="alert" className="mt-3 text-center text-sm text-red-400">
           {error}
         </p>
       )}
@@ -200,6 +205,7 @@ export function BuyButton() {
   return (
     <>
       <button
+        id="buy-final"
         type="button"
         onClick={buy}
         disabled={loading}
@@ -208,7 +214,7 @@ export function BuyButton() {
         {loading ? ui.buying : `${ui.buy} · ${money(totals.total)}`}
       </button>
       {error && (
-        <p role="alert" className="mt-3 text-xs text-red-400">
+        <p role="alert" className="mt-3 text-sm text-red-400">
           {error}
         </p>
       )}
@@ -222,24 +228,33 @@ export function BuyButton() {
  * (the banner owns the bottom edge until the visitor chooses).
  */
 export function StickyBar() {
-  const { lang, totals, loading, buy } = useBuy();
+  const { lang, totals, loading, error, buy } = useBuy();
   const consent = useConsent();
-  const [show, setShow] = useState(false);
+  const [visible, setVisible] = useState<Record<string, boolean>>({});
   const ui = UI[lang];
 
   useEffect(() => {
-    const el = document.getElementById("buy-main");
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => setShow(!entry.isIntersecting), { threshold: 0 });
-    io.observe(el);
+    const els = ["buy-main", "buy-final"].map((id) => document.getElementById(id)).filter((e): e is HTMLElement => !!e);
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) => setVisible((cur) => entries.reduce((acc, e) => ({ ...acc, [e.target.id]: e.isIntersecting }), cur)),
+      { threshold: 0 }
+    );
+    els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
 
   const bannerOpen = META_ENABLED && consent === null;
+  const show = !visible["buy-main"] && !visible["buy-final"];
   if (!show || bannerOpen) return null;
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink/95 px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-3 backdrop-blur md:hidden">
+      {error && (
+        <p role="alert" className="mb-2 text-center text-xs text-red-400">
+          {error}
+        </p>
+      )}
       <button
         type="button"
         onClick={buy}

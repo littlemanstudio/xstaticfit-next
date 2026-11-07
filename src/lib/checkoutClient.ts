@@ -19,7 +19,10 @@ export async function startCheckout(opts: {
   email?: string;
   marketingConsent?: boolean;
 }): Promise<string | null> {
-  const failed = opts.lang === "es" ? "No pudimos abrir el pago. Intenta de nuevo." : "Checkout failed. Try again.";
+  const failed =
+    opts.lang === "es"
+      ? "No pudimos abrir el pago. Intenta de nuevo o escríbenos a contact@xstaticfit.com."
+      : "We could not open checkout. Try again or email us at contact@xstaticfit.com.";
   const totals = cartTotals(opts.items);
   const lines = opts.items.map((i) => ({ id: i.slug, quantity: i.qty }));
   trackEvent(
@@ -57,7 +60,7 @@ export async function startCheckout(opts: {
       window.location.assign(data.url);
       return null;
     }
-    return typeof data.error === "string" && opts.lang === "en" ? data.error : failed;
+    return failed;
   } catch {
     return failed;
   }

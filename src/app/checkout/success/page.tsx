@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useCart } from "@/store/cart";
-import { useLang } from "@/lib/lang";
+import { setLang, useLang } from "@/lib/lang";
 import { PENDING_PURCHASE_KEY, trackPurchase } from "@/lib/meta/pixel";
 
 const FIRED_KEY = "xsf-purchases-tracked";
@@ -55,6 +55,10 @@ const COPY = {
     ],
     follow: "Follow the training on Instagram",
     shop: "Continue Shopping",
+    rewardTitle: "Get 10% off your next order",
+    rewardBody: "Send us a video of you using your gear and your honest review.",
+    rewardLink: "See how it works",
+    help: "Questions about your order? Email contact@xstaticfit.com",
   },
   es: {
     eyebrow: "Pedido confirmado",
@@ -68,6 +72,10 @@ const COPY = {
     ],
     follow: "Sigue el entrenamiento en Instagram",
     shop: "Seguir comprando",
+    rewardTitle: "Gana 10% en tu próximo pedido",
+    rewardBody: "Mándanos un video usando tu equipo y tu reseña honesta.",
+    rewardLink: "Mira cómo funciona",
+    help: "¿Dudas sobre tu pedido? Escríbenos a contact@xstaticfit.com",
   },
 } as const;
 
@@ -78,6 +86,9 @@ export default function CheckoutSuccessPage() {
   useEffect(() => {
     clear();
     firePurchaseOnce();
+    // The checkout sends the buyer back with ?lang=es so the page speaks the language of the ad they came from.
+    const q = new URLSearchParams(window.location.search).get("lang");
+    if (q === "es" || q === "en") setLang(q);
   }, [clear]);
 
   return (
@@ -100,6 +111,14 @@ export default function CheckoutSuccessPage() {
         </ol>
       </div>
 
+      <div className="mt-6 w-full border border-accent/40 bg-accent/[0.06] p-5 text-left">
+        <p className="font-stencil text-sm uppercase tracking-[0.15em] text-accent">{t.rewardTitle}</p>
+        <p className="mt-2 text-sm text-white/80">{t.rewardBody}</p>
+        <Link href="/rewards" className="mt-3 inline-flex min-h-11 items-center text-sm text-accent underline underline-offset-4">
+          {t.rewardLink}
+        </Link>
+      </div>
+
       <a
         href="https://instagram.com/xstaticfit"
         target="_blank"
@@ -108,6 +127,7 @@ export default function CheckoutSuccessPage() {
       >
         {t.follow} @xstaticfit
       </a>
+      <p className="mt-6 text-xs text-white/60">{t.help}</p>
       <Link
         href="/shop"
         className="mt-6 inline-block rounded-[3px] bg-accent px-8 py-4 font-stencil text-xs uppercase tracking-[0.2em] text-ink transition hover:brightness-95"

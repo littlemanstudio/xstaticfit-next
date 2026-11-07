@@ -24,6 +24,9 @@ export default function AdChrome({ children }: { children: React.ReactNode }) {
   const cart = useCart();
   const hydrated = useHasHydrated();
   const count = hydrated ? cart.count() : 0;
+  // The same offer in the other language: /go/kit <-> /en/go/kit.
+  const otherLang = lang === "es" ? "en" : "es";
+  const otherHref = lang === "es" ? pathname.replace(/^\/go\//, "/en/go/") : pathname.replace(/^\/en\/go\//, "/go/");
 
   return (
     <>
@@ -33,6 +36,15 @@ export default function AdChrome({ children }: { children: React.ReactNode }) {
             <Image src="/images/logo-white.png" alt="" aria-hidden width={28} height={28} className="h-7 w-7" priority />
             <span className="font-stencil text-base tracking-[0.1em]">XSTATIC FIT</span>
           </span>
+          <div className="flex items-center gap-1">
+          <Link
+            href={otherHref}
+            hrefLang={otherLang}
+            aria-label={lang === "es" ? "Switch to English" : "Cambiar a español"}
+            className="flex min-h-11 min-w-11 items-center justify-center text-xs font-semibold uppercase tracking-[3px] text-white/70 hover:text-white"
+          >
+            {otherLang}
+          </Link>
           {count > 0 && (
             <button
               onClick={cart.open}
@@ -47,6 +59,7 @@ export default function AdChrome({ children }: { children: React.ReactNode }) {
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-ink">{count}</span>
             </button>
           )}
+          </div>
         </div>
       </header>
       <CartDrawer />
