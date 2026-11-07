@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useCart } from "@/store/cart";
 import { setLang, useLang } from "@/lib/lang";
+import { PRODUCT_COPY } from "@/lib/funnel";
 import { PENDING_PURCHASE_KEY, trackPurchase } from "@/lib/meta/pixel";
 
 const FIRED_KEY = "xsf-purchases-tracked";
@@ -42,9 +43,43 @@ function firePurchaseOnce() {
   }
 }
 
+type Recap = { slugs: string[]; total?: number };
+
+// Read once per page load and kept: firePurchaseOnce clears the saved purchase right after this.
+let recapRaw: string | null | undefined;
+
+function recapSnapshot(): string | null {
+  if (recapRaw === undefined) {
+    try {
+      const sessionId = new URLSearchParams(window.location.search).get("session_id");
+      const raw = window.sessionStorage.getItem(PENDING_PURCHASE_KEY);
+      recapRaw = sessionId && raw && (JSON.parse(raw) as { id?: string }).id === sessionId ? raw : null;
+    } catch {
+      recapRaw = null;
+    }
+  }
+  return recapRaw;
+}
+
+const noSubscribe = () => () => {};
+
+/** What the buyer just ordered, from the checkout response saved before the Stripe redirect. */
+function parseRecap(raw: string | null): Recap | null {
+  if (!raw) return null;
+  try {
+    const pending = JSON.parse(raw) as { value?: number; content_ids?: string[] };
+    const slugs = (pending.content_ids ?? []).filter((slug) => slug in PRODUCT_COPY);
+    return slugs.length ? { slugs, total: pending.value } : null;
+  } catch {
+    return null;
+  }
+}
+
 const COPY = {
   en: {
     eyebrow: "Order Confirmed",
+    recapTitle: "Your order",
+    recapTotal: "Total paid",
     title: "You\u2019re a warrior",
     body: "Thank you for your order. A confirmation has been sent to your email.",
     stepsTitle: "What happens next",
@@ -62,6 +97,8 @@ const COPY = {
   },
   es: {
     eyebrow: "Pedido confirmado",
+    recapTitle: "Tu pedido",
+    recapTotal: "Total pagado",
     title: "Ya eres un guerrero",
     body: "Gracias por tu pedido. Te enviamos la confirmación a tu email.",
     stepsTitle: "Lo que sigue",
@@ -81,7 +118,9 @@ const COPY = {
 
 export default function CheckoutSuccessPage() {
   const clear = useCart((s) => s.clear);
-  const t = COPY[useLang()];
+  const lang = useLang();
+  const t = COPY[lang];
+  const recap = parseRecap(useSyncExternalStore(noSubscribe, recapSnapshot, () => null));
 
   useEffect(() => {
     clear();
@@ -97,7 +136,24 @@ export default function CheckoutSuccessPage() {
       <h1 className="mt-4 font-stencil text-4xl uppercase">{t.title}</h1>
       <p className="mt-4 text-sm text-white/70">{t.body}</p>
 
-      <div className="mt-8 w-full border border-white/10 p-5 text-left">
+      {recap && recap.slugs.length > 0 && (
+        <div className="mt-8 w-full border border-white/10 p-5 text-left">
+          <p className="font-stencil text-xs uppercase tracking-[0.2em] text-white/60">{t.recapTitle}</p>
+          <ul className="mt-3 flex flex-col gap-1 text-sm text-white/80">
+            {recap.slugs.map((slug) => (
+              <li key={slug}>{PRODUCT_COPY[slug][lang].name}</li>
+            ))}
+          </ul>
+          {typeof recap.total === "number" && (
+            <p className="mt-3 flex justify-between border-t border-white/10 pt-3 text-sm font-semibold">
+              <span>{t.recapTotal}</span>
+              <span>${recap.total.toFixed(2)} USD</span>
+            </p>
+          )}
+        </div>
+      )}
+
+      <div className="mt-6 w-full border border-white/10 p-5 text-left">
         <p className="font-stencil text-xs uppercase tracking-[0.2em] text-white/60">{t.stepsTitle}</p>
         <ol className="mt-3 flex flex-col gap-3 text-sm text-white/80">
           {t.steps.map((step, i) => (
