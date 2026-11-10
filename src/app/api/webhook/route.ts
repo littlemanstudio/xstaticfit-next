@@ -169,6 +169,7 @@ export async function POST(request: NextRequest) {
       items,
       total,
       currency: (session.currency ?? "usd").toUpperCase(),
+      lang: languageFor(addr?.country),
       stripeUrl: `https://dashboard.stripe.com/payments/${session.payment_intent}`,
     };
 
@@ -199,8 +200,27 @@ export async function POST(request: NextRequest) {
     });
 
     if (email !== "none") {
-      const customerText = [
-        "Your Xstatic Fit order is confirmed.",
+      const es = order.lang === "es";
+      const customerText = es ? [
+        "Welcome Warrior. Tu pedido de Xstatic Fit está confirmado.",
+        "",
+        "Gracias por tu compra. Acabas de empezar este camino.",
+        "",
+        "Enviamos a:",
+        name,
+        addressLines.join("\n"),
+        "",
+        "Productos:",
+        items.map((i) => `${i.qty} x ${i.label}`).join("\n") || "(ninguno)",
+        "",
+        `Total: $${total} ${order.currency}`,
+        "",
+        "Mira el resto de nuestros productos: https://www.xstaticfit.com/shop",
+        "¿Quieres 10% en tu próximo pedido? Mándanos un video corto usándolo con tu reseña honesta (cualquier calificación): https://www.xstaticfit.com/rewards",
+        "",
+        "Si algo no se ve bien, responde a este correo.",
+      ].join("\n") : [
+        "Welcome Warrior. Your Xstatic Fit order is confirmed.",
         "",
         "Shipping to:",
         name,
@@ -211,12 +231,16 @@ export async function POST(request: NextRequest) {
         "",
         `Total: $${total} ${order.currency}`,
         "",
+        "Thank you for your purchase. You just started this journey.",
+        "Check out our other products: https://www.xstaticfit.com/shop",
+        "Want 10% off your next order? Send us a short video of you using it with your honest review (any rating): https://www.xstaticfit.com/rewards",
+        "",
         "If anything looks off, just reply to this email.",
       ].join("\n");
 
       await sendOrderEmail({
         to: email,
-        subject: "Your Xstatic Fit order is confirmed",
+        subject: es ? "Welcome Warrior: tu pedido de Xstatic Fit está confirmado" : "Welcome Warrior: your Xstatic Fit order is confirmed",
         text: customerText,
         html: renderOrderHtml(order, "customer"),
         replyTo: OWNER_EMAIL,
