@@ -63,7 +63,7 @@ function esc(v: string) {
   return v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-export function renderRewardHtml(lang: "en" | "es", postalAddress: string) {
+export function renderRewardHtml(lang: "en" | "es", postalAddress: string, unsubscribeUrl?: string) {
   const c = REWARD_COPY[lang];
   const steps = c.steps
     .map(
@@ -122,7 +122,7 @@ export function renderRewardHtml(lang: "en" | "es", postalAddress: string) {
     </td></tr>
 
     <tr><td bgcolor="${CARD}" style="${solid(CARD)}border-top:1px solid ${LINE};padding:16px 28px;font-family:${BODY_FONT};font-size:11px;line-height:1.6;color:${MUTED};">
-      ${esc(c.why)}<br><br>Xstatic Fit &middot; xstaticfit.com<br>${esc(postalAddress)}
+      ${esc(c.why)}${unsubscribeUrl ? ` <a href="${unsubscribeUrl}" style="color:${MUTED};text-decoration:underline;">${lang === "es" ? "Cancelar suscripción" : "Unsubscribe"}</a>.` : ""}<br><br>Xstatic Fit &middot; xstaticfit.com<br>${esc(postalAddress)}
     </td></tr>
   </table>
 </td></tr>
