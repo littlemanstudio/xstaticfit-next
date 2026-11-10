@@ -29,10 +29,50 @@ export type OrderEmail = {
   total: string;
   currency: string;
   stripeUrl: string;
+  /** Customer language: Puerto Rico gets Spanish, everyone else English (same rule as Klaviyo). */
+  lang?: "en" | "es";
 };
+
+const SITE = "https://www.xstaticfit.com";
+const UTM = "utm_source=order_email&utm_medium=email&utm_campaign=welcome_warrior";
+
+/** The post-purchase "postcard": the same card that goes printed in the box, digital. */
+export const POSTCARD = {
+  en: {
+    eyebrow: "Welcome Warrior",
+    title: "You just started this journey.",
+    thanks: "Thank you for your purchase.",
+    body: "Check out our other products on our website.",
+    shop: "See the rest of the gear",
+    rewardTitle: "Want 10% off your next order?",
+    rewardBody:
+      "Send us a short video of you using it, with your honest review (any rating, we want the truth). We email you a 10% code for any single item on your next order.",
+    reward: "How to get your 10%",
+    thanksOrder: "Order confirmed",
+    shipTo: "Shipping to",
+    items: "Items",
+    help: "If anything looks off, just reply to this email and we will sort it out.",
+  },
+  es: {
+    eyebrow: "Welcome Warrior",
+    title: "Acabas de empezar este camino.",
+    thanks: "Gracias por tu compra.",
+    body: "Mira el resto de nuestros productos en nuestra página.",
+    shop: "Ver el resto del equipo",
+    rewardTitle: "¿Quieres 10% en tu próximo pedido?",
+    rewardBody:
+      "Mándanos un video corto usándolo, con tu reseña honesta (cualquier calificación, queremos la verdad). Te enviamos por email un código de 10% para cualquier producto de tu próximo pedido.",
+    reward: "Cómo ganar tu 10%",
+    thanksOrder: "Pedido confirmado",
+    shipTo: "Enviamos a",
+    items: "Productos",
+    help: "Si algo no se ve bien, responde a este correo y lo resolvemos.",
+  },
+} as const;
 
 export function renderOrderHtml(o: OrderEmail, kind: "owner" | "customer") {
   const isOwner = kind === "owner";
+  const c = POSTCARD[o.lang ?? "en"];
   const label = (t: string) =>
     `<div style="font-family:${HEADING_FONT};font-size:12px;letter-spacing:2px;text-transform:uppercase;color:${MUTED};margin:0 0 8px;">${t}</div>`;
 
@@ -67,14 +107,14 @@ export function renderOrderHtml(o: OrderEmail, kind: "owner" | "customer") {
     </td></tr>
 
     <tr><td bgcolor="${CARD}" style="${BG_CARD}padding:32px 28px 8px;">
-      <div style="font-family:${HEADING_FONT};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${ACCENT};">${isOwner ? "New order" : "Order confirmed"}</div>
+      <div style="font-family:${HEADING_FONT};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${ACCENT};">${isOwner ? "New order" : c.thanksOrder}</div>
       <div style="font-family:${HEADING_FONT};font-size:48px;line-height:1.1;color:${TEXT};margin-top:6px;">$${esc(o.total)}</div>
       <div style="font-family:${BODY_FONT};font-size:14px;color:${MUTED};margin-top:2px;">${esc(o.currency)}</div>
     </td></tr>
 
     <tr><td bgcolor="${CARD}" style="${BG_CARD}padding:20px 28px 8px;">
       <div style="${BG_PANEL}border-left:4px solid ${ACCENT};padding:18px 20px;">
-        ${label(isOwner ? "Ship to" : "Shipping to")}
+        ${label(isOwner ? "Ship to" : c.shipTo)}
         <div style="font-family:${HEADING_FONT};font-size:24px;letter-spacing:1px;color:${TEXT};margin-bottom:6px;">${esc(o.name)}</div>
         <div style="font-family:${BODY_FONT};font-size:16px;line-height:1.5;color:${TEXT};">${addressHtml}</div>
       </div>
@@ -92,15 +132,34 @@ export function renderOrderHtml(o: OrderEmail, kind: "owner" | "customer") {
     }
 
     <tr><td bgcolor="${CARD}" style="${BG_CARD}padding:16px 28px 8px;">
-      ${label("Items")}
+      ${label(isOwner ? "Items" : c.items)}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ${LINE};">${itemRows}</table>
     </td></tr>
+
+
+    ${
+      isOwner
+        ? ""
+        : `<tr><td bgcolor="${CARD}" style="${BG_CARD}padding:8px 28px 8px;">
+      <div style="${BG_PANEL}border:2px solid ${ACCENT};padding:30px 24px;text-align:center;">
+        <div style="font-family:${HEADING_FONT};font-size:13px;letter-spacing:4px;text-transform:uppercase;color:${ACCENT};">${esc(c.eyebrow)}</div>
+        <div style="font-family:${HEADING_FONT};font-size:34px;line-height:1.1;letter-spacing:1px;color:${TEXT};text-transform:uppercase;margin-top:10px;">${esc(c.title)}</div>
+        <div style="font-family:${BODY_FONT};font-size:17px;line-height:1.5;color:${TEXT};margin-top:14px;">${esc(c.thanks)}</div>
+        <div style="font-family:${BODY_FONT};font-size:15px;line-height:1.5;color:${MUTED};margin-top:6px;">${esc(c.body)}</div>
+        <a href="${SITE}/shop?${UTM}" style="display:inline-block;margin-top:20px;background:${ACCENT};color:#0d0d0d;font-family:${HEADING_FONT};font-size:14px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 26px;">${esc(c.shop)}</a>
+        <div style="border-top:1px solid ${LINE};margin:26px 0 20px;"></div>
+        <div style="font-family:${HEADING_FONT};font-size:20px;letter-spacing:1px;text-transform:uppercase;color:${TEXT};">${esc(c.rewardTitle)}</div>
+        <div style="font-family:${BODY_FONT};font-size:14px;line-height:1.6;color:${MUTED};margin-top:8px;">${esc(c.rewardBody)}</div>
+        <a href="${SITE}/rewards?${UTM}" style="display:inline-block;margin-top:16px;border:2px solid ${ACCENT};color:${ACCENT};font-family:${HEADING_FONT};font-size:13px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:11px 22px;">${esc(c.reward)}</a>
+      </div>
+    </td></tr>`
+    }
 
     <tr><td bgcolor="${CARD}" style="${BG_CARD}padding:24px 28px 32px;">
       ${
         isOwner
           ? `<a href="${esc(o.stripeUrl)}" style="display:inline-block;background:${ACCENT};color:#0d0d0d;font-family:${HEADING_FONT};font-size:14px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:14px 26px;">View in Stripe</a>`
-          : `<div style="font-family:${BODY_FONT};font-size:15px;line-height:1.6;color:${TEXT};">Thank you for your order. If anything looks off, just reply to this email and we will sort it out.</div>`
+          : `<div style="font-family:${BODY_FONT};font-size:15px;line-height:1.6;color:${MUTED};">${c.help}</div>`
       }
     </td></tr>
 
